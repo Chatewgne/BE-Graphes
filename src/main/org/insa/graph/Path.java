@@ -87,6 +87,7 @@ public class Path {
         	}
         	arcs.add(next_arc);
         }
+
         return new Path(graph, arcs);
     }
 
