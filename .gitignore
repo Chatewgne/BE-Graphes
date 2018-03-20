@@ -16,3 +16,6 @@ doc
 *.mapgr
 *.path
 *.tgz
+/.idea/
+/out/
+*.eml
