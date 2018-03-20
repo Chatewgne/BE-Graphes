@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-reader-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-reader-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/svg-salamander-1.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-core-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-awt-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-poi-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/svg-salamander-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/kxml2-2.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-themes-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-poi-awt-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-map-awt-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-poi-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-themes-0.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-core-0.9.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mapsforge-poi-awt-0.9.1-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
