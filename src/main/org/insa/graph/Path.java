@@ -2,6 +2,7 @@ package org.insa.graph;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,20 +26,30 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+
+        for (int i = 0; i < nodes.size() - 1; i ++) {
+        	Node start = nodes.get(i);
+        	Node end = nodes.get(i+1);
+        	double fastest_time = Double.POSITIVE_INFINITY;
+        	Arc next_arc = null;
+        	for (Arc arc : start.getSuccessors()) {
+        		if (arc.getDestination().equals(end)) {
+        			if (arc.getMinimumTravelTime() < fastest_time) {
+        				fastest_time = arc.getMinimumTravelTime();
+        				next_arc = arc;
+        			}
+        		}
+        	}
+        	if (next_arc == null) {
+            	throw new IllegalArgumentException();
+        	}
+        	arcs.add(next_arc);
+        }
         return new Path(graph, arcs);
-    }
-    
-    /*
-     * Verify that the nodes are consecutive.
-     */
-    private static boolean checkNodes(List<Node> nodes) {
-    	return false;
     }
 
     /**
@@ -58,7 +69,24 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+    	for (int i = 0; i < nodes.size() - 1; i ++) {
+        	Node start = nodes.get(i);
+        	Node end = nodes.get(i+1);
+        	float longest_path = Float.POSITIVE_INFINITY;
+        	Arc next_arc = null;
+        	for (Arc arc : start.getSuccessors()) {
+        		if (arc.getDestination().equals(end)) {
+        			if (arc.getLength() < longest_path) {
+        				longest_path = arc.getLength();
+        				next_arc = arc;
+        			}
+        		}
+        	}
+        	if (next_arc == null) {
+            	throw new IllegalArgumentException();
+        	}
+        	arcs.add(next_arc);
+        }
         return new Path(graph, arcs);
     }
 
