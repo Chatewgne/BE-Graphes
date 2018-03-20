@@ -33,6 +33,13 @@ public class Path {
         // TODO:
         return new Path(graph, arcs);
     }
+    
+    /*
+     * Verify that the nodes are consecutive.
+     */
+    private static boolean checkNodes(List<Node> nodes) {
+    	return false;
+    }
 
     /**
      * Create a new path that goes through the given list of nodes (in order),
