@@ -242,8 +242,12 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double res = 0;
+        for (Arc arc : this.arcs)
+        {
+            res+=arc.getMinimumTravelTime();
+        }
+        return res;
     }
 
 }
