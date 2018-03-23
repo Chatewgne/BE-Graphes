@@ -31,6 +31,10 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
 
+        if (nodes.size() == 1) {
+            return new Path(graph,nodes.get(0));
+        }
+
         for (int i = 0; i < nodes.size() - 1; i ++) {
         	Node start = nodes.get(i);
         	Node end = nodes.get(i+1);
@@ -68,6 +72,11 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+
+        if (nodes.size() == 1) {
+            return new Path(graph,nodes.get(0));
+        }
+        
     	for (int i = 0; i < nodes.size() - 1; i ++) {
         	Node start = nodes.get(i);
         	Node end = nodes.get(i+1);
