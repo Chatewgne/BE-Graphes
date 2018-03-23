@@ -36,14 +36,15 @@ public class Path {
         	Node end = nodes.get(i+1);
         	double fastest_time = Double.POSITIVE_INFINITY;
         	Arc next_arc = null;
-        	for (Arc arc : start.getSuccessors()) {
-        		if (arc.getDestination().equals(end)) {
-        			if (arc.getMinimumTravelTime() < fastest_time) {
-        				fastest_time = arc.getMinimumTravelTime();
-        				next_arc = arc;
-        			}
-        		}
-        	}
+            for (Iterator<Arc> it = start.iterator();it.hasNext();) {
+                Arc arc = it.next();
+                if (arc.getDestination().equals(end)) {
+                    if (arc.getMinimumTravelTime() < fastest_time) {
+                        fastest_time = arc.getMinimumTravelTime();
+                        next_arc = arc;
+                    }
+                }
+            }
         	if (next_arc == null) {
             	throw new IllegalArgumentException();
         	}
@@ -63,8 +64,6 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
@@ -74,7 +73,8 @@ public class Path {
         	Node end = nodes.get(i+1);
         	float longest_path = Float.POSITIVE_INFINITY;
         	Arc next_arc = null;
-        	for (Arc arc : start.getSuccessors()) {
+        	for (Iterator<Arc> it = start.iterator();it.hasNext();) {
+                Arc arc = it.next();
         		if (arc.getDestination().equals(end)) {
         			if (arc.getLength() < longest_path) {
         				longest_path = arc.getLength();
@@ -284,7 +284,6 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
         double res = 0;
