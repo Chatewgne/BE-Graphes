@@ -19,3 +19,5 @@ doc
 /.idea/
 /out/
 *.eml
+*.xml
+src/BE-Graphes.iml
