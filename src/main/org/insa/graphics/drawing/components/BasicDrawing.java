@@ -32,6 +32,8 @@ import org.insa.graphics.drawing.Drawing;
 import org.insa.graphics.drawing.DrawingClickListener;
 import org.insa.graphics.drawing.GraphPalette;
 import org.insa.graphics.drawing.MercatorProjection;
+import org.insa.graphics.drawing.PlateCarreProjection;
+import org.insa.graphics.drawing.Projection;
 import org.insa.graphics.drawing.overlays.MarkerOverlay;
 import org.insa.graphics.drawing.overlays.MarkerUtils;
 import org.insa.graphics.drawing.overlays.Overlay;
@@ -301,7 +303,7 @@ public class BasicDrawing extends JPanel implements Drawing {
     // Maximum width for the drawing (in pixels).
     private static final int MAXIMUM_DRAWING_WIDTH = 2000;
 
-    private MercatorProjection projection;
+    private Projection projection;
 
     // Width and height of the image
     private int width, height;
@@ -573,8 +575,15 @@ public class BasicDrawing extends JPanel implements Drawing {
         float deltaLon = 0.01f * diffLon, deltaLat = 0.01f * diffLat;
 
         // Create the projection and retrieve width and height for the box.
-        projection = new MercatorProjection(box.extend(deltaLon, deltaLat, deltaLon, deltaLat),
-                MAXIMUM_DRAWING_WIDTH);
+        BoundingBox extendedBox = box.extend(deltaLon, deltaLat, deltaLon, deltaLat);
+
+        // Special projection for non-realistic maps...
+        if (graph.getMapId().startsWith("0x")) {
+            projection = new PlateCarreProjection(extendedBox, MAXIMUM_DRAWING_WIDTH / 4);
+        }
+        else {
+            projection = new MercatorProjection(extendedBox, MAXIMUM_DRAWING_WIDTH);
+        }
         this.width = (int) projection.getImageWidth();
         this.height = (int) projection.getImageHeight();
 
@@ -605,7 +614,7 @@ public class BasicDrawing extends JPanel implements Drawing {
 
     @Override
     public void drawGraph(Graph graph, GraphPalette palette) {
-        int repaintModulo = graph.getNodes().size() / 100;
+        int repaintModulo = Math.max(1, graph.size() / 100);
 
         // Initialize the buffered image
 
@@ -616,8 +625,8 @@ public class BasicDrawing extends JPanel implements Drawing {
         this.removeMouseMotionListener(zoomAndPanListener);
         this.removeMouseWheelListener(zoomAndPanListener);
 
-        for (Node node: graph.getNodes()) {
-            for (Arc arc: node.getSuccessors()) {
+        for (Node node: graph) {
+            for (Arc arc: node) {
                 // Draw arcs only if there are one-way arcs or if origin is lower than
                 // destination, avoid drawing two-ways arc twice.
                 if (arc.getRoadInformation().isOneWay()
