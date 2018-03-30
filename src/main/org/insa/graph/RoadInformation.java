@@ -2,10 +2,9 @@ package org.insa.graph;
 
 /**
  * Class containing information for road that may be shared by multiple arcs.
- * 
+ * <p>
  * Sharing information between arcs reduces memory footprints of the program - A
  * long road is often split into multiple arcs at each intersection.
- * 
  */
 public class RoadInformation {
 
@@ -50,16 +49,16 @@ public class RoadInformation {
 
     /**
      * Create a new RoadInformation instance containing the given parameters.
-     * 
+     *
      * @param roadType Type of the road (see {@link RoadType}).
-     * @param access Access restrictions for the road (see
-     * {@link AccessRestrictions}).
+     * @param access   Access restrictions for the road (see
+     *                 {@link AccessRestrictions}).
      * @param isOneWay true if this road is a one way road, false otherwise.
      * @param maxSpeed Maximum speed for the road (in kilometers-per-hour).
-     * @param name Name of the road.
+     * @param name     Name of the road.
      */
     public RoadInformation(RoadType roadType, AccessRestrictions access, boolean isOneWay,
-            int maxSpeed, String name) {
+                           int maxSpeed, String name) {
         this.type = roadType;
         this.access = access;
         this.oneway = isOneWay;
