@@ -47,8 +47,8 @@ public class Launch {
     public static void main(String[] args) throws Exception {
 
         // Visit these directory to see the list of available files on Commetud.
-        String mapName = "/home/celia/BE-Graphes/maps/france.mapgr";
-        String pathName = "/home/celia/BE-Graphes/paths/path_fr_insa_tour.path";
+        String mapName = "maps/toulouse.mapgr";
+        String pathName = "paths/path_fr31tls_insa_laas_canal.path";
 
         // Create a graph reader.
         GraphReader reader = new BinaryGraphReader(
