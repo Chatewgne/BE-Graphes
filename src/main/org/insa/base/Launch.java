@@ -59,9 +59,8 @@ public class Launch {
 
         // Create the drawing:
         Drawing drawing = createDrawing();
-
         // TODO: Draw the graph on the drawing.
-
+        drawing.drawGraph(graph);
         // TODO: Create a PathReader.
         PathReader pathReader = new BinaryPathReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(pathName))));;
@@ -70,6 +69,8 @@ public class Launch {
         Path path = pathReader.readPath(graph);
 
         // TODO: Draw the path.
+        drawing.drawPath(path);
+
 
     }
 
