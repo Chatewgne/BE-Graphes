@@ -161,24 +161,22 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
      * Return the index of the element E, if found, else throws ElementNotFoundException.
      */
     private int getElememt(E x) throws ElementNotFoundException {
-        for (int i = 0; i < this.size(); i ++) {
-            if (this.array.get(i).equals(x)) {
-                return i;
-            }
-        }
-        throw new ElementNotFoundException(x);
+        return getElementRec(x,0);
     }
 
     private int getElementRec(E x, int index) throws ElementNotFoundException {
-        if (x.equals(this.array.get(index)) ) {
+        if (index > this.size() - 1) {
+            throw new ElementNotFoundException(x);
+        }
+        else if (x.equals(this.array.get(index)) ) {
             return index;
-        } else if (x.compareTo(this.array.get(index)) > 0) {
+        } else if (x.compareTo(this.array.get(index)) < 0) {
             throw new ElementNotFoundException(x);
         } else {
             try {
                 return this.getElementRec(x, this.index_left(index));
             } catch (ElementNotFoundException e) {
-                return getElementRec(x, this.index_left(index) - 1);
+                return getElementRec(x, this.index_left(index) + 1);
             }
         }
     }
