@@ -150,7 +150,6 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
             this.percolateUp(index);
             this.percolateDown(index);
             //this.currentSize--;
-            System.out.println("Suppression de : " + x + " à l'index " + index + ". Nouvelle taille : " + this.currentSize);
         }
         else {
             throw new ElementNotFoundException(x);
