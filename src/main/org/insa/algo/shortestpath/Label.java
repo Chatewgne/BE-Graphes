@@ -5,10 +5,10 @@ import org.insa.graph.Node;
 
 public class Label {
     public boolean marked ;
-    public Arc parent ;
+    public Node parent ;
     public double cost ;
 
-    public Label(boolean marked, Arc parent, double cost) {
+    public Label(boolean marked, Node parent, double cost) {
         this.marked = marked;
         this.parent = parent;
         this.cost = cost;

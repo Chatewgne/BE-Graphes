@@ -11,6 +11,7 @@ import org.insa.graph.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import static jdk.nashorn.internal.objects.NativeMath.min;
 
@@ -60,7 +61,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     {
                         labels.get(y.getId()).cost = NewCout;
                         tas.insert(y);
-                        labels.get(y.getId()).parent = arc;
+                        labels.get(y.getId()).parent = x;
                         labels.get(y.getId()).marked = false;
                     }
                 }
@@ -76,23 +77,24 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
 
 
-        ArrayList<Arc> result = new ArrayList<Arc>();
+        ArrayList<Node> result = new ArrayList<Node>();
 
         int debut = data.getDestination().getId();
         boolean done_rebuilding = false;
         while (! done_rebuilding) {
             Label current = labels.get(debut);
-            Arc path_chunk = current.parent;
-            result.add(path_chunk);
-            debut = path_chunk.getOrigin().getId();
+            result.add(current.parent);
+            debut = current.parent.getId();
 
-            if (path_chunk.getOrigin().equals(data.getOrigin())) {
+            if (debut == (data.getOrigin().getId())) {
                 done_rebuilding = true;
             }
-
         }
 
-        Path sol_path = new Path(graph, result);
+        for(int i = 0, j = result.size() - 1; i < j; i++) {
+            result.add(i, result.remove(j));
+        }
+        Path sol_path = Path.createShortestPathFromNodes(graph, result);
 
         solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
 
