@@ -1,8 +1,9 @@
 package org.insa.algo.shortestpath;
 
 import org.insa.algo.AbstractSolution;
-import org.insa.algo.ArcInspector;
 import org.insa.algo.utils.BinaryHeap;
+import org.insa.algo.shortestpath.Label;
+import org.insa.algo.utils.ElementNotFoundException;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -33,22 +34,24 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         System.out.println("NbNodes : " + nbNodes);
         ArrayList<Label> labels = new ArrayList<>();
         for (int i = 0; i < nbNodes; i++) {
-            labels.add(new Label(false, null, Double.POSITIVE_INFINITY));
+            labels.add(new Label(null, null, false, Double.POSITIVE_INFINITY));
         }
-        labels.set(data.getOrigin().getId(), new Label(false,null,0.0));
+        Label labi = new Label(data.getOrigin(), null, false, 0.0);
+        labels.set(data.getOrigin().getId(), labi);
 
-        BinaryHeap<Node> tas = new BinaryHeap<>();
-        tas.insert(data.getOrigin());
+        BinaryHeap<Label> tas= new BinaryHeap<>();
+        tas.insert(labels.get(data.getOrigin().getId()));
+        //BinaryHeap<Node> tas = new BinaryHeap<>();
+        //tas.insert(data.getOrigin());
 
         while (!done)
         {
             if (tas.isEmpty()) {
                 break;
             }
-            Node x = tas.deleteMin() ;
-            System.out.println("ID : " + x.getId());
-            labels.get(x.getId()).marked = true;
-            Iterator<Arc> it = x.iterator();
+            Label x = tas.deleteMin() ;
+            x.marked = true;
+            Iterator<Arc> it = graph.get(x.me.getId()).iterator();
             while (it.hasNext())
             {
                 Arc arc = it.next();
@@ -59,10 +62,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
                     if (NewCout < AncienCout)
                     {
+                        labels.get(y.getId()).me = y ;
                         labels.get(y.getId()).cost = NewCout;
-                        tas.insert(y);
-                        labels.get(y.getId()).parent = x;
+                        //tas.insert(labels.get(y.getId()));
+                        labels.get(y.getId()).parent = x.me;
                         labels.get(y.getId()).marked = false;
+                        try {
+                            tas.remove(labels.get(y.getId()));
+                        }
+                        catch (ElementNotFoundException ignored){}
+
+                        tas.insert(labels.get(y.getId()));
                     }
                 }
             }
@@ -79,31 +89,32 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         ArrayList<Node> result = new ArrayList<Node>();
 
-        try {
-            /* Création du chemin */
-            Node current = data.getDestination();
-            boolean done_rebuilding = false;
-            while (! done_rebuilding) {
+        /* Création du chemin */
+        Node current = data.getDestination();
+        boolean done_rebuilding = false;
+        while (! done_rebuilding) {
+            result.add(current);
+            current = labels.get(current.getId()).parent;
+
+            if (current.equals(data.getOrigin())) {
+                done_rebuilding = true;
                 result.add(current);
-                current = labels.get(current.getId()).parent;
-
-                if (current.equals(data.getOrigin())) {
-                    done_rebuilding = true;
-                }
             }
-
-                /* Inversion du chemin */
-                for(int i = 0, j = result.size() - 1; i < j; i++) {
-                    result.add(i, result.remove(j));
-                }
-                Path sol_path = Path.createShortestPathFromNodes(graph, result);
-                solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
-                return solution;
+        }
+        /* Inversion du chemin */
+        for(int i = 0, j = result.size() - 1; i < j; i++) {
+            result.add(i, result.remove(j));
         }
 
+        try {
+            Path sol_path = Path.createShortestPathFromNodes(graph, result);
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
+            return solution;
+        }
         catch (Exception e) {
-                return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
+            return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
         }
+
     }
 
 }
