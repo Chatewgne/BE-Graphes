@@ -57,7 +57,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 {
                     double AncienCout = labels.get(y.getId()).cost;
                     double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
-                    if (AncienCout > NewCout)
+                    if (NewCout < AncienCout)
                     {
                         labels.get(y.getId()).cost = NewCout;
                         tas.insert(y);
@@ -79,14 +79,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         ArrayList<Node> result = new ArrayList<Node>();
 
-        int debut = data.getDestination().getId();
+        Node current = data.getDestination();
         boolean done_rebuilding = false;
         while (! done_rebuilding) {
-            Label current = labels.get(debut);
-            result.add(current.parent);
-            debut = current.parent.getId();
+            result.add(current);
+            current = labels.get(current.getId()).parent;
 
-            if (debut == (data.getOrigin().getId())) {
+            if (current.equals(data.getOrigin())) {
                 done_rebuilding = true;
             }
         }
