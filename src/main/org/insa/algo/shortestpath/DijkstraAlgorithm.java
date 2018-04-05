@@ -26,7 +26,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         boolean done = false ;
         // Initialize array of distances.
         Label[] labels = new Label[nbNodes];
-        Arrays.fill(labels, new Label(false, null,Double.POSITIVE_INFINITY);
+        Arrays.fill(labels, new Label(false, null,Double.POSITIVE_INFINITY));
         labels[data.getOrigin().getId()] = new Label(false,null,0.0);
 
         BinaryHeap<Node> tas = new BinaryHeap<>();
