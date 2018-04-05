@@ -89,6 +89,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         ArrayList<Node> result = new ArrayList<Node>();
 
+        /* Création du chemin */
         Node current = data.getDestination();
         boolean done_rebuilding = false;
         while (! done_rebuilding) {
@@ -100,15 +101,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 result.add(current);
             }
         }
-
-        for(int i = 0, j = result.size() -1 ; i < j; i++) {
+        /* Inversion du chemin */
+        for(int i = 0, j = result.size() - 1; i < j; i++) {
             result.add(i, result.remove(j));
         }
-        Path sol_path = Path.createShortestPathFromNodes(graph, result);
 
-        solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
+        try {
+            Path sol_path = Path.createShortestPathFromNodes(graph, result);
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
+            return solution;
+        }
+        catch (Exception e) {
+            return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
+        }
 
-        return solution;
     }
 
 }
