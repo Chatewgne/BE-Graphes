@@ -10,6 +10,7 @@ public class Label implements Comparable<Label> {
     public Node me;
 
     public Label(Node me, Node parent,boolean marked, double cost) {
+        this.me = me;
         this.marked = marked;
         this.parent = parent;
         this.cost = cost;
