@@ -52,13 +52,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     }
                 }
             }
+            done = true;
             for (Label lab : labels)
             {
-                boolean trouve = false ;
-                while (!trouve){
-                    if (!lab.marked) trouve = true ;
+                if (lab.marked) {
+                    done = false;
                 }
-                if (trouve) done = true ;
             }
         }
 
