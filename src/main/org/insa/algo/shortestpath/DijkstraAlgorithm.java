@@ -1,5 +1,7 @@
 package org.insa.algo.shortestpath;
 
+import org.insa.algo.AbstractSolution;
+import org.insa.algo.ArcInspector;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
@@ -28,33 +30,38 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         boolean done = false ;
         // Initialize array of distances.
         System.out.println("NbNodes : " + nbNodes);
-        Label[] labels = new Label[nbNodes];
-        Arrays.fill(labels, new Label(false, null,Double.POSITIVE_INFINITY));
-        labels[data.getOrigin().getId()] = new Label(false,null,0.0);
+        ArrayList<Label> labels = new ArrayList<>();
+        for (int i = 0; i < nbNodes; i++) {
+            labels.add(new Label(false, null, Double.POSITIVE_INFINITY));
+        }
+        labels.set(data.getOrigin().getId(), new Label(false,null,0.0));
 
         BinaryHeap<Node> tas = new BinaryHeap<>();
         tas.insert(data.getOrigin());
 
         while (!done)
         {
+            if (tas.isEmpty()) {
+                break;
+            }
             Node x = tas.deleteMin() ;
             System.out.println("ID : " + x.getId());
-            labels[x.getId()].marked = true;
+            labels.get(x.getId()).marked = true;
             Iterator<Arc> it = x.iterator();
             while (it.hasNext())
             {
                 Arc arc = it.next();
                 Node y = arc.getDestination();
-                if (!(labels[y.getId()].marked) && !y.equals(x))
+                if (!(labels.get(y.getId()).marked) && !y.equals(x))
                 {
-                    double AncienCout = labels[y.getId()].cost;
-                    double NewCout = labels[arc.getOrigin().getId()].cost + arc.getLength();
+                    double AncienCout = labels.get(y.getId()).cost;
+                    double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
                     if (AncienCout > NewCout)
                     {
-                        labels[y.getId()].cost = NewCout;
+                        labels.get(y.getId()).cost = NewCout;
                         tas.insert(y);
-                        labels[y.getId()].parent = arc;
-                        labels[y.getId()].marked = false;
+                        labels.get(y.getId()).parent = arc;
+                        labels.get(y.getId()).marked = false;
                     }
                 }
             }
@@ -63,6 +70,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             {
                 if (!lab.marked) {
                     done = false;
+                    break;
                 }
             }
         }
@@ -73,7 +81,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         int debut = data.getDestination().getId();
         boolean done_rebuilding = false;
         while (! done_rebuilding) {
-            Label current = labels[debut];
+            Label current = labels.get(debut);
             Arc path_chunk = current.parent;
             result.add(path_chunk);
             debut = path_chunk.getOrigin().getId();
@@ -84,6 +92,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         }
 
+        Path sol_path = new Path(graph, result);
+
+        solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
 
         return solution;
     }
