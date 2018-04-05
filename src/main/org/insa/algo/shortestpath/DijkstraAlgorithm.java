@@ -86,27 +86,27 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
         }
 
-
-        ArrayList<Node> result = new ArrayList<Node>();
-
-        /* Création du chemin */
-        Node current = data.getDestination();
-        boolean done_rebuilding = false;
-        while (! done_rebuilding) {
-            result.add(current);
-            current = labels.get(current.getId()).parent;
-
-            if (current.equals(data.getOrigin())) {
-                done_rebuilding = true;
-                result.add(current);
-            }
-        }
-        /* Inversion du chemin */
-        for(int i = 0, j = result.size() - 1; i < j; i++) {
-            result.add(i, result.remove(j));
-        }
-
         try {
+
+            ArrayList<Node> result = new ArrayList<Node>();
+
+            /* Création du chemin */
+            Node current = data.getDestination();
+            boolean done_rebuilding = false;
+            while (! done_rebuilding) {
+                result.add(current);
+                current = labels.get(current.getId()).parent;
+
+                if (current.equals(data.getOrigin())) {
+                    done_rebuilding = true;
+                    result.add(current);
+                }
+            }
+            /* Inversion du chemin */
+            for(int i = 0, j = result.size() - 1; i < j; i++) {
+                result.add(i, result.remove(j));
+            }
+
             Path sol_path = Path.createShortestPathFromNodes(graph, result);
             solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
             return solution;
