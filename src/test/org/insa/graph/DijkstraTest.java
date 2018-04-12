@@ -13,6 +13,7 @@ import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathData;
+import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.algo.utils.PriorityQueueTest;
 import org.insa.graph.RoadInformation.RoadType;
 import org.junit.BeforeClass;
@@ -81,11 +82,15 @@ public class DijkstraTest {
         ShortestPathData data = new ShortestPathData(graph, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
-        float expectedLength = Bell.run().getPath().getLength() ;
-        float foundLength = Dijk.run().getPath().getLength() ;
-        
-        assertEquals(foundLength,expectedLength , 1e-6);
 
+        ShortestPathSolution bell_sol = Bell.run();
+        ShortestPathSolution djik_sol = Dijk.run();
+
+        assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
+
+        if (bell_sol.isFeasible()) {
+            assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+        }
 
     }
 
@@ -93,13 +98,10 @@ public class DijkstraTest {
     public void testAll(){
         for(int i = 0; i < nodes.length;i++)
         {
-            for(int u = 0; u < nodes.length;i++)
+            for(int u = 0; u < nodes.length;u++)
             {
                 if (i!=u){
-                    i=3;
-                    u=2;
-                    System.out.println(i +" et" + u);
-                  testDijkstraAlgorithm(nodes[i],nodes[u]);
+                    testDijkstraAlgorithm(nodes[i],nodes[u]);
                 }
             }
         }
