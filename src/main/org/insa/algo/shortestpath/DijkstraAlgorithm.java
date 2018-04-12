@@ -63,7 +63,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             {
                 Arc arc = it.next();
                 Node y = arc.getDestination();
-                if (!(labels.get(y.getId()).marked) && !y.equals(x))
+                if (!(labels.get(y.getId()).marked) && !y.equals(x) && data.isAllowed(arc))
                 {
                     double AncienCout = labels.get(y.getId()).cost;
                     double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
@@ -72,9 +72,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     {
                         labels.get(y.getId()).me = y ;
                         labels.get(y.getId()).cost = NewCout;
-                        //tas.insert(labels.get(y.getId()));
                         labels.get(y.getId()).parent = x.me;
-                        //labels.get(y.getId()).marked = false;
                         try {
                             tas.remove(labels.get(y.getId()));
                         }
