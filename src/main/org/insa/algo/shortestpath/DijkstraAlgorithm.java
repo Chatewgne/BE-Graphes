@@ -51,7 +51,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
             Label x = tas.deleteMin() ;
             x.marked = true;
+            if (x.me.equals(data.getDestination())) {
+                done = true;
+            }
             Iterator<Arc> it = graph.get(x.me.getId()).iterator();
+            notifyNodeReached(x.me);
             while (it.hasNext())
             {
                 Arc arc = it.next();
@@ -76,12 +80,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     }
                 }
             }
-            done = true;
-            for (Label lab : labels)
-            {
-                if (!lab.marked) {
-                    done = false;
-                    break;
+            if (!done) {
+                done = true;
+                for (Label lab : labels) {
+                    if (!lab.marked) {
+                        done = false;
+                        break;
+                    }
                 }
             }
         }
