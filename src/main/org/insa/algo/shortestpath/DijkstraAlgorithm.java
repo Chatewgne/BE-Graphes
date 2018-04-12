@@ -52,10 +52,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             Label x = tas.deleteMin() ;
             x.marked = true;
             if (x.me.equals(data.getDestination())) {
+                notifyDestinationReached(x.me);
                 done = true;
             }
             Iterator<Arc> it = graph.get(x.me.getId()).iterator();
-            notifyNodeReached(x.me);
+            notifyNodeMarked(x.me);
             while (it.hasNext())
             {
                 Arc arc = it.next();
@@ -64,13 +65,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 {
                     double AncienCout = labels.get(y.getId()).cost;
                     double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
+                    notifyNodeReached(y);
                     if (NewCout < AncienCout)
                     {
                         labels.get(y.getId()).me = y ;
                         labels.get(y.getId()).cost = NewCout;
                         //tas.insert(labels.get(y.getId()));
                         labels.get(y.getId()).parent = x.me;
-                        labels.get(y.getId()).marked = false;
+                        //labels.get(y.getId()).marked = false;
                         try {
                             tas.remove(labels.get(y.getId()));
                         }
