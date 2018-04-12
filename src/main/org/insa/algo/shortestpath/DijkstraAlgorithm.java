@@ -74,7 +74,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         labels.get(y.getId()).cost = NewCout;
                         //tas.insert(labels.get(y.getId()));
                         labels.get(y.getId()).parent = x.me;
-                        labels.get(y.getId()).marked = false;
+                        //labels.get(y.getId()).marked = false;
                         try {
                             tas.remove(labels.get(y.getId()));
                         }
