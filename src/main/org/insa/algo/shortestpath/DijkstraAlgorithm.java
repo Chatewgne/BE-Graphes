@@ -31,9 +31,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = graph.size();
         boolean done = false ;
         // Initialize array of distances.
-        ArrayList<Label> labels = new ArrayList<>();
+        ArrayList<Label> labels = new ArrayList<>(nbNodes);
         for (int i = 0; i < nbNodes; i++) {
-            labels.add(new Label(null, null, false, Double.POSITIVE_INFINITY));
+            labels.add(null);
+            //labels[i] = new Label(null, null, false, Double.POSITIVE_INFINITY);
         }
         Label labi = new Label(data.getOrigin(), null, false, 0.0);
         labels.set(data.getOrigin().getId(), labi);
@@ -62,7 +63,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             {
                 Arc arc = it.next();
                 Node y = arc.getDestination();
-                if (!(labels.get(y.getId()).marked) && !y.equals(x) && data.isAllowed(arc))
+                Label label_y = labels.get(y.getId());
+                // Allocation du label
+                if (label_y == null) {
+                    labels.set(y.getId(), new Label(null, null, false, Double.POSITIVE_INFINITY));
+                    label_y = labels.get(y.getId());
+                }
+
+                if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
                 {
                     double AncienCout = labels.get(y.getId()).cost;
                     double NewCout = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
@@ -84,7 +92,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             if (!done) {
                 done = true;
                 for (Label lab : labels) {
-                    if (!lab.marked) {
+                    if (lab == null || !lab.marked) {
                         done = false;
                         break;
                     }
