@@ -222,6 +222,26 @@ public class PathfindingTest {
         Node start = realGraph.get(5402);
         Node end = realGraph.get(5932);
 
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(1); // Only roads open for cars
+        ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
+        DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+        BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
+
+        ShortestPathSolution bell_sol = Bell.run();
+        ShortestPathSolution djik_sol = Dijk.run();
+
+        assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
+
+        for (Arc arc : djik_sol.getPath().getArcs()) {
+            assertNotEquals(arc.getDestination(), realGraph.get(15765));
+            assertNotEquals(arc.getOrigin(), realGraph.get(15765));
+        }
+
+        for (Arc arc : bell_sol.getPath().getArcs()) {
+            assertNotEquals(arc.getDestination(), realGraph.get(15765));
+            assertNotEquals(arc.getOrigin(), realGraph.get(15765));
+        }
+
 
     }
 
