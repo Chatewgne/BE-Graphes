@@ -1,9 +1,5 @@
 package org.insa.graph;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -11,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.insa.algo.AbstractInputData;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.BellmanFordAlgorithm;
@@ -25,6 +22,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import static org.junit.Assert.*;
 
 public class DijkstraTest {
 
@@ -90,8 +89,8 @@ public class DijkstraTest {
 
     }
 
-    private void testDijkstraAlgorithm(Node u, Node i, Graph g){
-        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(0); // no filters
+    private void testDijkstraAlgorithm(Node u, Node i, Graph g, int arcInspectorId){
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspectorId); // no filters
         ShortestPathData data = new ShortestPathData(g, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
@@ -102,7 +101,12 @@ public class DijkstraTest {
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
 
         if (bell_sol.isFeasible()) {
-            assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+            if (insp.getMode() == AbstractInputData.Mode.LENGTH) {
+                assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+            }
+            if (insp.getMode() == AbstractInputData.Mode.TIME) {
+                assertEquals(bell_sol.getPath().getMinimumTravelTime(), djik_sol.getPath().getMinimumTravelTime(), 1e-6);
+            }
         }
 
     }
@@ -114,7 +118,7 @@ public class DijkstraTest {
             for(int u = 0; u < nodes.length;u++)
             {
                 if (i!=u){
-                    testDijkstraAlgorithm(nodes[i],nodes[u], graph);
+                    testDijkstraAlgorithm(nodes[i],nodes[u], graph, 0);
                 }
             }
         }
@@ -122,21 +126,23 @@ public class DijkstraTest {
 
     @Test
     public void testRealMap() {
-        Node start = realGraph.get(35052);
-        Node end = realGraph.get(16597);
-        testDijkstraAlgorithm(start, end, realGraph);
+        for (int i = 0; i < 6; i++) {
+            Node start = realGraph.get(35052);
+            Node end = realGraph.get(16597);
+            testDijkstraAlgorithm(start, end, realGraph, i);
 
-        start = realGraph.get(7890);
-        end = realGraph.get(25890);
-        testDijkstraAlgorithm(start, end, realGraph);
+            start = realGraph.get(7890);
+            end = realGraph.get(25890);
+            testDijkstraAlgorithm(start, end, realGraph, i);
 
-        start = realGraph.get(25890);
-        end = realGraph.get(7890);
-        testDijkstraAlgorithm(start, end, realGraph);
+            start = realGraph.get(25890);
+            end = realGraph.get(7890);
+            testDijkstraAlgorithm(start, end, realGraph, i);
 
-        start = realGraph.get(33333);
-        end = realGraph.get(1);
-        testDijkstraAlgorithm(start, end, realGraph);
+            start = realGraph.get(33333);
+            end = realGraph.get(1);
+            testDijkstraAlgorithm(start, end, realGraph, i);
+        }
     }
 
     @Test
@@ -144,7 +150,7 @@ public class DijkstraTest {
         Node start = realGraph.get(23683);
         Node end = realGraph.get(1445);
 
-        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(4); // no filters
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(4); // Pedestrian only
         ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
@@ -178,7 +184,25 @@ public class DijkstraTest {
         Node start = realGraph.get(22596);
         Node end = realGraph.get(3030);
 
-        testDijkstraAlgorithm(start, end, realGraph);
-
+        testDijkstraAlgorithm(start, end, realGraph,0);
+        testDijkstraAlgorithm(start, end, realGraph,5);
     }
+
+    @Test
+    public void testShortestPathLongerThanFastestPath() {
+        Node start = realGraph.get(50);
+        Node end = realGraph.get(950);
+        ArcInspector insp_length = ArcInspectorFactory.getAllFilters().get(1);
+        ArcInspector insp_time = ArcInspectorFactory.getAllFilters().get(2);
+        ShortestPathData data_length = new ShortestPathData(realGraph, start, end, insp_length);
+        ShortestPathData data_time = new ShortestPathData(realGraph, start, end, insp_time);
+        DijkstraAlgorithm dijk_length = new DijkstraAlgorithm(data_length);
+        DijkstraAlgorithm dijk_time = new DijkstraAlgorithm(data_time);
+
+        ShortestPathSolution dijk_sol_length = dijk_length.run();
+        ShortestPathSolution dijk_sol_time  = dijk_time.run();
+        assertTrue(dijk_sol_length.getPath().getMinimumTravelTime() >= dijk_sol_time.getPath().getMinimumTravelTime());
+        assertTrue(dijk_sol_length.getPath().getLength()<= dijk_sol_time.getPath().getLength());
+    }
+
 }

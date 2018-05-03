@@ -168,6 +168,38 @@ public class ArcInspectorFactory {
             }
         });
 
+        // Vélo
+        filters.add(new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getTravelTime(
+                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+            }
+
+            @Override
+            public String toString() {
+                return "Fastest path for bicycles";
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return 35;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.LENGTH;
+            }
+        });
+
         // Add your own filters here (do not forget to implement toString()
         // to get an understandable output!):
 

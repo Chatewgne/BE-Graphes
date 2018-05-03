@@ -65,7 +65,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 if (!(labels.get(y.getId()).marked) && !y.equals(x) && data.isAllowed(arc))
                 {
                     double AncienCout = labels.get(y.getId()).cost;
-                    double NewCout = labels.get(arc.getOrigin().getId()).cost + arc.getLength();
+                    double NewCout = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
                     notifyNodeReached(y);
                     if (NewCout < AncienCout)
                     {
