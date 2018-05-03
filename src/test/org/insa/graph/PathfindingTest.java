@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class DijkstraTest {
+public class PathfindingTest {
 
     // Small graph use for tests
     private static Graph graph;
@@ -203,6 +203,14 @@ public class DijkstraTest {
         ShortestPathSolution dijk_sol_time  = dijk_time.run();
         assertTrue(dijk_sol_length.getPath().getMinimumTravelTime() >= dijk_sol_time.getPath().getMinimumTravelTime());
         assertTrue(dijk_sol_length.getPath().getLength()<= dijk_sol_time.getPath().getLength());
+    }
+
+    @Test
+    public void testNoBusWay() {
+        Node start = realGraph.get(5402);
+        Node end = realGraph.get(5932);
+
+
     }
 
 }
