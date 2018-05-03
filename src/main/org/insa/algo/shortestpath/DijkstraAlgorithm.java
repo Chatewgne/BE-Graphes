@@ -31,7 +31,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = graph.size();
         boolean done = false ;
         // Initialize array of distances.
-        System.out.println("NbNodes : " + nbNodes);
         ArrayList<Label> labels = new ArrayList<>();
         for (int i = 0; i < nbNodes; i++) {
             labels.add(new Label(null, null, false, Double.POSITIVE_INFINITY));

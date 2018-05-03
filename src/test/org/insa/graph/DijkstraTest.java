@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +19,8 @@ import org.insa.algo.shortestpath.ShortestPathData;
 import org.insa.algo.shortestpath.ShortestPathSolution;
 import org.insa.algo.utils.PriorityQueueTest;
 import org.insa.graph.RoadInformation.RoadType;
+import org.insa.graph.io.BinaryGraphReader;
+import org.insa.graph.io.GraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +30,8 @@ public class DijkstraTest {
 
     // Small graph use for tests
     private static Graph graph;
+
+    private static Graph realGraph;
 
     // List of nodes
     private static Node[] nodes;
@@ -39,6 +46,12 @@ public class DijkstraTest {
 
     @BeforeClass
     public static void initAll() throws IOException {
+
+
+        // On charge la carte de Toulouse
+        String mapName = "../maps/toulouse.mapgr";
+        GraphReader reader =  new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+        realGraph = reader.read();
 
         // 10 and 20 meters per seconds
         RoadInformation speed10 = new RoadInformation(RoadType.MOTORWAY, null, true, 36, "");
@@ -77,9 +90,9 @@ public class DijkstraTest {
 
     }
 
-    private void testDijkstraAlgorithm(Node u, Node i){
+    private void testDijkstraAlgorithm(Node u, Node i, Graph g){
         ArcInspector insp = ArcInspectorFactory.getAllFilters().get(0); // no filters
-        ShortestPathData data = new ShortestPathData(graph, u, i, insp);
+        ShortestPathData data = new ShortestPathData(g, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
 
@@ -95,16 +108,35 @@ public class DijkstraTest {
     }
 
     @Test
-    public void testAll(){
+    public void testSmallGraph(){
         for(int i = 0; i < nodes.length;i++)
         {
             for(int u = 0; u < nodes.length;u++)
             {
                 if (i!=u){
-                    testDijkstraAlgorithm(nodes[i],nodes[u]);
+                    testDijkstraAlgorithm(nodes[i],nodes[u], graph);
                 }
             }
         }
+    }
+
+    @Test
+    public void testRealMap() {
+        Node start = realGraph.get(35052);
+        Node end = realGraph.get(16597);
+        testDijkstraAlgorithm(start, end, realGraph);
+
+        start = realGraph.get(7890);
+        end = realGraph.get(25890);
+        testDijkstraAlgorithm(start, end, realGraph);
+
+        start = realGraph.get(25890);
+        end = realGraph.get(7890);
+        testDijkstraAlgorithm(start, end, realGraph);
+
+        start = realGraph.get(33333);
+        end = realGraph.get(1);
+        testDijkstraAlgorithm(start, end, realGraph);
     }
 
 }
