@@ -28,8 +28,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         final int nbNodes = graph.size();
         boolean done = false ;
         // Initialize array of distances.
-        System.out.println("NbNodes : " + nbNodes);
-        ArrayList<AstarLabel> labels = new ArrayList<>();
+        ArrayList<AstarLabel> labels = new ArrayList<>(nbNodes);
         for (int i = 0; i < nbNodes; i++) {
             labels.add(new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
         }
@@ -64,7 +63,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                 {
                     labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
                     double TotalAncienCout = labels.get(y.getId()).getCoutTotal();
-                    double NewCoutFromOrigin = labels.get(arc.getOrigin().getId()).cost + arc.getLength() ;
+                    double NewCoutFromOrigin = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
                     double TotalCout = NewCoutFromOrigin + labels.get(y.getId()).estimatedGoalDistance ;
                     notifyNodeReached(y);
                     if (TotalCout < TotalAncienCout)

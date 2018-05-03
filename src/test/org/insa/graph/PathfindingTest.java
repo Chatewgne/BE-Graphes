@@ -53,7 +53,7 @@ public class PathfindingTest {
         // Create nodes
         nodes = new Node[6];
         for (int i = 0; i < nodes.length; ++i) {
-            nodes[i] = new Node(i, null);
+            nodes[i] = new Node(i, new Point(0,0));
         }
 
         // Add arcs...
@@ -88,7 +88,7 @@ public class PathfindingTest {
         ShortestPathData data = new ShortestPathData(g, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
-        AStarAlgorithm Ast = new AStarAlgorithm(data)
+        AStarAlgorithm Ast = new AStarAlgorithm(data);
 
         ShortestPathSolution bell_sol = Bell.run();
         ShortestPathSolution djik_sol = Dijk.run();
@@ -226,9 +226,11 @@ public class PathfindingTest {
         ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
+        AStarAlgorithm Ast = new AStarAlgorithm(data);
 
         ShortestPathSolution bell_sol = Bell.run();
         ShortestPathSolution djik_sol = Dijk.run();
+        ShortestPathSolution ast_sol = Ast.run();
 
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
 
@@ -238,6 +240,11 @@ public class PathfindingTest {
         }
 
         for (Arc arc : bell_sol.getPath().getArcs()) {
+            assertNotEquals(arc.getDestination(), realGraph.get(15765));
+            assertNotEquals(arc.getOrigin(), realGraph.get(15765));
+        }
+
+        for (Arc arc : ast_sol.getPath().getArcs()) {
             assertNotEquals(arc.getDestination(), realGraph.get(15765));
             assertNotEquals(arc.getOrigin(), realGraph.get(15765));
         }
