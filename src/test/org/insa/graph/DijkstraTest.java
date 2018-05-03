@@ -14,14 +14,11 @@ import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathData;
 import org.insa.algo.shortestpath.ShortestPathSolution;
-import org.insa.algo.utils.PriorityQueueTest;
 import org.insa.graph.RoadInformation.RoadType;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import static org.junit.Assert.*;
 
@@ -89,7 +86,7 @@ public class DijkstraTest {
 
     }
 
-    private void testDijkstraAlgorithm(Node u, Node i, Graph g, int arcInspectorId){
+    private void testShortestPathAlgorithm(Node u, Node i, Graph g, int arcInspectorId){
         ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspectorId); // no filters
         ShortestPathData data = new ShortestPathData(g, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
@@ -97,15 +94,18 @@ public class DijkstraTest {
 
         ShortestPathSolution bell_sol = Bell.run();
         ShortestPathSolution djik_sol = Dijk.run();
+        ShortestPathSolution astar_sol = djik_sol;
 
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
 
         if (bell_sol.isFeasible()) {
             if (insp.getMode() == AbstractInputData.Mode.LENGTH) {
                 assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+                assertEquals(djik_sol.getPath().getLength(), astar_sol.getPath().getLength(), 1e-6);
             }
             if (insp.getMode() == AbstractInputData.Mode.TIME) {
                 assertEquals(bell_sol.getPath().getMinimumTravelTime(), djik_sol.getPath().getMinimumTravelTime(), 1e-6);
+                assertEquals(djik_sol.getPath().getMinimumTravelTime(), astar_sol.getPath().getMinimumTravelTime(), 1e-6);
             }
         }
 
@@ -118,7 +118,7 @@ public class DijkstraTest {
             for(int u = 0; u < nodes.length;u++)
             {
                 if (i!=u){
-                    testDijkstraAlgorithm(nodes[i],nodes[u], graph, 0);
+                    testShortestPathAlgorithm(nodes[i],nodes[u], graph, 0);
                 }
             }
         }
@@ -129,19 +129,19 @@ public class DijkstraTest {
         for (int i = 0; i < 6; i++) {
             Node start = realGraph.get(35052);
             Node end = realGraph.get(16597);
-            testDijkstraAlgorithm(start, end, realGraph, i);
+            testShortestPathAlgorithm(start, end, realGraph, i);
 
             start = realGraph.get(7890);
             end = realGraph.get(25890);
-            testDijkstraAlgorithm(start, end, realGraph, i);
+            testShortestPathAlgorithm(start, end, realGraph, i);
 
             start = realGraph.get(25890);
             end = realGraph.get(7890);
-            testDijkstraAlgorithm(start, end, realGraph, i);
+            testShortestPathAlgorithm(start, end, realGraph, i);
 
             start = realGraph.get(33333);
             end = realGraph.get(1);
-            testDijkstraAlgorithm(start, end, realGraph, i);
+            testShortestPathAlgorithm(start, end, realGraph, i);
         }
     }
 
@@ -184,8 +184,8 @@ public class DijkstraTest {
         Node start = realGraph.get(22596);
         Node end = realGraph.get(3030);
 
-        testDijkstraAlgorithm(start, end, realGraph,0);
-        testDijkstraAlgorithm(start, end, realGraph,5);
+        testShortestPathAlgorithm(start, end, realGraph,0);
+        testShortestPathAlgorithm(start, end, realGraph,5);
     }
 
     @Test
