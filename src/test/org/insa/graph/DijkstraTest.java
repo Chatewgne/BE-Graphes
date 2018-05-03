@@ -139,4 +139,46 @@ public class DijkstraTest {
         testDijkstraAlgorithm(start, end, realGraph);
     }
 
+    @Test
+    public void testNoPath() {
+        Node start = realGraph.get(23683);
+        Node end = realGraph.get(1445);
+
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(4); // no filters
+        ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
+        DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+        BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
+
+        ShortestPathSolution bell_sol = Bell.run();
+        ShortestPathSolution djik_sol = Dijk.run();
+
+        assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
+        assertEquals(bell_sol.isFeasible(), false);
+
+        if (bell_sol.isFeasible()) {
+            assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+        }
+    }
+
+    @Test
+    public void testSameNode() {
+        Node start = realGraph.get(5);
+        Node end = realGraph.get(5);
+
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(0); // no filters
+        ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
+        DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+        ShortestPathSolution djik_sol = Dijk.run();
+
+        assertEquals(djik_sol.isFeasible(), false);
+    }
+
+    @Test
+    public void veryLongPath() {
+        Node start = realGraph.get(22596);
+        Node end = realGraph.get(3030);
+
+        testDijkstraAlgorithm(start, end, realGraph);
+
+    }
 }
