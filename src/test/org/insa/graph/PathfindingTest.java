@@ -10,10 +10,7 @@ import java.util.Arrays;
 import org.insa.algo.AbstractInputData;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
-import org.insa.algo.shortestpath.BellmanFordAlgorithm;
-import org.insa.algo.shortestpath.DijkstraAlgorithm;
-import org.insa.algo.shortestpath.ShortestPathData;
-import org.insa.algo.shortestpath.ShortestPathSolution;
+import org.insa.algo.shortestpath.*;
 import org.insa.graph.RoadInformation.RoadType;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
@@ -91,21 +88,22 @@ public class PathfindingTest {
         ShortestPathData data = new ShortestPathData(g, u, i, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
+        AStarAlgorithm Ast = new AStarAlgorithm(data)
 
         ShortestPathSolution bell_sol = Bell.run();
         ShortestPathSolution djik_sol = Dijk.run();
-        ShortestPathSolution astar_sol = djik_sol;
+        ShortestPathSolution ast_sol = Ast.run();
 
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
 
         if (bell_sol.isFeasible()) {
             if (insp.getMode() == AbstractInputData.Mode.LENGTH) {
                 assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
-                assertEquals(djik_sol.getPath().getLength(), astar_sol.getPath().getLength(), 1e-6);
+                assertEquals(djik_sol.getPath().getLength(), ast_sol.getPath().getLength(), 1e-6);
             }
             if (insp.getMode() == AbstractInputData.Mode.TIME) {
                 assertEquals(bell_sol.getPath().getMinimumTravelTime(), djik_sol.getPath().getMinimumTravelTime(), 1e-6);
-                assertEquals(djik_sol.getPath().getMinimumTravelTime(), astar_sol.getPath().getMinimumTravelTime(), 1e-6);
+                assertEquals(djik_sol.getPath().getMinimumTravelTime(), ast_sol.getPath().getMinimumTravelTime(), 1e-6);
             }
         }
 
@@ -154,15 +152,18 @@ public class PathfindingTest {
         ShortestPathData data = new ShortestPathData(realGraph, start, end, insp);
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
+        AStarAlgorithm Ast = new AStarAlgorithm(data);
 
         ShortestPathSolution bell_sol = Bell.run();
         ShortestPathSolution djik_sol = Dijk.run();
+        ShortestPathSolution ast_sol = Ast.run();
 
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
-        assertEquals(bell_sol.isFeasible(), false);
+        assertEquals(bell_sol.isFeasible(),ast_sol.isFeasible());
 
         if (bell_sol.isFeasible()) {
             assertEquals(bell_sol.getPath().getLength(), djik_sol.getPath().getLength(), 1e-6);
+            assertEquals(bell_sol.getPath().getLength(), ast_sol.getPath().getLength(), 1e-6);
         }
     }
 
@@ -176,7 +177,11 @@ public class PathfindingTest {
         DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
         ShortestPathSolution djik_sol = Dijk.run();
 
+        AStarAlgorithm Ast = new AStarAlgorithm(data);
+        ShortestPathSolution ast_sol = Ast.run();
+
         assertEquals(djik_sol.isFeasible(), false);
+        assertEquals(ast_sol.isFeasible(), false);
     }
 
     @Test
@@ -198,11 +203,18 @@ public class PathfindingTest {
         ShortestPathData data_time = new ShortestPathData(realGraph, start, end, insp_time);
         DijkstraAlgorithm dijk_length = new DijkstraAlgorithm(data_length);
         DijkstraAlgorithm dijk_time = new DijkstraAlgorithm(data_time);
+        AStarAlgorithm ast_length = new AStarAlgorithm(data_length);
+        AStarAlgorithm ast_time= new AStarAlgorithm(data_time);
 
         ShortestPathSolution dijk_sol_length = dijk_length.run();
         ShortestPathSolution dijk_sol_time  = dijk_time.run();
+        ShortestPathSolution ast_sol_time = ast_time.run();
+        ShortestPathSolution ast_sol_length = ast_length.run();
         assertTrue(dijk_sol_length.getPath().getMinimumTravelTime() >= dijk_sol_time.getPath().getMinimumTravelTime());
         assertTrue(dijk_sol_length.getPath().getLength()<= dijk_sol_time.getPath().getLength());
+        assertTrue(ast_sol_length.getPath().getMinimumTravelTime() >= ast_sol_time.getPath().getMinimumTravelTime());
+        assertTrue(ast_sol_length.getPath().getLength()<= ast_sol_time.getPath().getLength());
+
     }
 
     @Test

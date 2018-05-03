@@ -1,9 +1,126 @@
 package org.insa.algo.shortestpath;
+import org.insa.algo.AbstractSolution;
+import org.insa.algo.utils.BinaryHeap;
+import org.insa.algo.shortestpath.AstarLabel;
+import org.insa.algo.utils.ElementNotFoundException;
+import org.insa.graph.Arc;
+import org.insa.graph.Graph;
+import org.insa.graph.Node;
+import org.insa.graph.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import static jdk.nashorn.internal.objects.NativeMath.min;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public AStarAlgorithm(ShortestPathData data) {
         super(data);
+    }
+
+    @Override
+    protected ShortestPathSolution doRun() {
+        ShortestPathData data = getInputData();
+        ShortestPathSolution solution = null;
+        // Retrieve the graph.
+        Graph graph = data.getGraph();
+        final int nbNodes = graph.size();
+        boolean done = false ;
+        // Initialize array of distances.
+        System.out.println("NbNodes : " + nbNodes);
+        ArrayList<AstarLabel> labels = new ArrayList<>();
+        for (int i = 0; i < nbNodes; i++) {
+            labels.add(new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
+        }
+        AstarLabel labi = new AstarLabel(data.getOrigin(), null, false, 0.0, data.getOrigin().getPoint().distanceTo(data.getDestination().getPoint()));
+        labels.set(data.getOrigin().getId(), labi);
+
+        BinaryHeap<AstarLabel> tas= new BinaryHeap<>();
+        tas.insert(labels.get(data.getOrigin().getId()));
+        //BinaryHeap<Node> tas = new BinaryHeap<>();
+        //tas.insert(data.getOrigin());
+
+        while (!done)
+        {
+            if (tas.isEmpty()) {
+                break;
+            }
+            AstarLabel x = tas.deleteMin() ;
+            if(x.me.equals(data.getOrigin())){notifyOriginProcessed(x.me);}
+            x.marked = true;
+            notifyNodeMarked(x.me);
+            if (x.me.equals(data.getDestination())) {
+                done = true;
+                notifyDestinationReached(x.me);
+            }
+            Iterator<Arc> it = graph.get(x.me.getId()).iterator();
+
+            while (it.hasNext())
+            {
+                Arc arc = it.next();
+                Node y = arc.getDestination();
+                if (!(labels.get(y.getId()).marked) && !y.equals(x) && data.isAllowed(arc))
+                {
+                    labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
+                    double TotalAncienCout = labels.get(y.getId()).getCoutTotal();
+                    double NewCoutFromOrigin = labels.get(arc.getOrigin().getId()).cost + arc.getLength() ;
+                    double TotalCout = NewCoutFromOrigin + labels.get(y.getId()).estimatedGoalDistance ;
+                    notifyNodeReached(y);
+                    if (TotalCout < TotalAncienCout)
+                    {
+                        labels.get(y.getId()).me = y ;
+                        labels.get(y.getId()).cost = NewCoutFromOrigin;
+                        labels.get(y.getId()).parent = x.me;
+                        try {
+                            tas.remove(labels.get(y.getId()));
+                        }
+                        catch (ElementNotFoundException ignored){}
+
+                        tas.insert(labels.get(y.getId()));
+                    }
+                }
+            }
+            if (!done) {
+                done = true;
+                for (AstarLabel lab : labels) {
+                    if (!lab.marked) {
+                        done = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        try {
+
+            ArrayList<Node> result = new ArrayList<Node>();
+
+            /* Création du chemin */
+            Node current = data.getDestination();
+            boolean done_rebuilding = false;
+            while (! done_rebuilding) {
+                result.add(current);
+                current = labels.get(current.getId()).parent;
+
+                if (current.equals(data.getOrigin())) {
+                    done_rebuilding = true;
+                    result.add(current);
+                }
+            }
+            /* Inversion du chemin */
+            for(int i = 0, j = result.size() - 1; i < j; i++) {
+                result.add(i, result.remove(j));
+            }
+
+            Path sol_path = Path.createShortestPathFromNodes(graph, result);
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
+            return solution;
+        }
+        catch (Exception e) {
+            return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
+        }
+
     }
 
 }

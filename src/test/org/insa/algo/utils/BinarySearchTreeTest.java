@@ -1,5 +1,7 @@
 package org.insa.algo.utils;
 
+import org.junit.Test;
+
 public class BinarySearchTreeTest extends PriorityQueueTest {
 
     @Override
@@ -12,4 +14,8 @@ public class BinarySearchTreeTest extends PriorityQueueTest {
         return new BinarySearchTree<>((BinarySearchTree<MutableInteger>) queue);
     }
 
+    @Test
+    public void TestDijkstraAlgorithm(){
+
+    }
 }
