@@ -31,6 +31,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         ArrayList<AstarLabel> labels = new ArrayList<>(nbNodes);
         for (int i = 0; i < nbNodes; i++) {
             labels.add(new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
+            //labels[i] = new Label(null, null, false, Double.POSITIVE_INFINITY);
         }
         AstarLabel labi = new AstarLabel(data.getOrigin(), null, false, 0.0, data.getOrigin().getPoint().distanceTo(data.getDestination().getPoint()));
         labels.set(data.getOrigin().getId(), labi);
@@ -59,7 +60,14 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             {
                 Arc arc = it.next();
                 Node y = arc.getDestination();
-                if (!(labels.get(y.getId()).marked) && !y.equals(x) && data.isAllowed(arc))
+                AstarLabel label_y = labels.get(y.getId());
+                // Allocation du label
+                if (label_y == null) {
+                    labels.set(y.getId(), new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, y.getPoint().distanceTo(data.getDestination().getPoint())));
+                    label_y = labels.get(y.getId());
+                }
+
+                if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
                 {
                     labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
                     double TotalAncienCout = labels.get(y.getId()).getCoutTotal();
@@ -69,7 +77,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                     if (TotalCout < TotalAncienCout)
                     {
                         labels.get(y.getId()).me = y ;
-                        labels.get(y.getId()).cost = NewCoutFromOrigin;
+                        labels.get(y.getId()).cost = TotalCout;
                         labels.get(y.getId()).parent = x.me;
                         try {
                             tas.remove(labels.get(y.getId()));
@@ -83,7 +91,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
             if (!done) {
                 done = true;
                 for (AstarLabel lab : labels) {
-                    if (!lab.marked) {
+                    if (lab == null || !lab.marked) {
                         done = false;
                         break;
                     }
