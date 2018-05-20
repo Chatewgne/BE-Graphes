@@ -5,6 +5,11 @@ date : 20 Mai 2018
 ---
 
 # Introduction 
+
+Le but de ce Bureau d'étude est de nous faire découvrir les méthodes modernes de programmation utilisée en entreprise au travers de l'implémentation de deux algorithmes de recherches de chemin. Nous commençons par implémenter les structures de données nécessaires à leur implémentation (file de priorité) pour ensuite implémenter un algorithme de Dijkstra et un algorithme d'Astar. Enfin nous écrivons des tests unitaires pour vérifier l'implémentation de nos algorithmes.
+
+Pour terminer ce Bureau d'étude il nous est demandé de réfléchir à un problème de graphe dit "ouvert".
+
 # Documents de conception
 
 Afin de se familiariser avec la librairie Java qui nous est fournie nous avons réalisé un graphe UML des différentes classes en rapport avec les graphes.
@@ -304,5 +309,13 @@ En conclusion, nous avons eu une démarche de test visant à couvrir le plus de 
 De plus les tests nous ont permis de vérifier l'implémentation de l'Astar de manière automatique. Nous sommes donc très satisfait d'avoir passé du temps à écrire ces tests car cela a été un vrai gain de temps et nous avons très vite rentabilisé le temps passé à écrire des tests. 
 
 # Tests de performance
+
+TODO <3
+
 # Problème ouvert
+
+<3
+
 # Conclusion
+
+Durant ce Bureau d'étude nous avons pu découvrir les méthodes modernes de programmation : utilisation de Java 8, développement d'une suite de test, benchmark du code, etc. Nous avons aussi pu mettre en pratique le cours de programmation orienté objet (POO) en nous insérant au milieu d'un projet déjà construit. On a aussi réalisé un graphe `UML` des différentes classes du projet.
