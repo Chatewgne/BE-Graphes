@@ -16,7 +16,6 @@ public class AstarLabel implements Comparable<AstarLabel> {
         this.parent = parent;
         this.cost = cost;
         this.estimatedGoalDistance = estimation;
-
     }
 
 /*
@@ -28,9 +27,9 @@ public class AstarLabel implements Comparable<AstarLabel> {
 
     @Override
     public int compareTo(AstarLabel label) {
-        Double val = (this.cost + this.estimatedGoalDistance) - (label.cost + label.estimatedGoalDistance) ;
-        if (val == 0) val = this.cost - label.cost;
-        return val.intValue();
+        //Double val = (this.cost + this.estimatedGoalDistance) - (label.cost + label.estimatedGoalDistance);
+        //if (val == 0) val = this.cost - label.cost;
+        return (int) Math.signum((this.cost + this.estimatedGoalDistance) - (label.cost + label.estimatedGoalDistance));
     }
 
     public double getCoutTotal(){

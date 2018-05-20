@@ -26,7 +26,6 @@ public class Label implements Comparable<Label> {
     @Override
     public int compareTo(Label label) {
         Double val = this.cost - label.cost;
-        if (val == 0) val = this.cost - label.cost;
         return val.intValue();
     }
 

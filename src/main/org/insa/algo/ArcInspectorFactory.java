@@ -196,7 +196,7 @@ public class ArcInspectorFactory {
 
             @Override
             public Mode getMode() {
-                return Mode.LENGTH;
+                return Mode.TIME;
             }
         });
 
