@@ -16,6 +16,7 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.NativeMath.min;
 
+
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     public DijkstraAlgorithm(ShortestPathData data) {
@@ -24,6 +25,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+
         ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
         // Retrieve the graph.

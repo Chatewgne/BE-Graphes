@@ -77,7 +77,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                     if (TotalCout < TotalAncienCout)
                     {
                         labels.get(y.getId()).me = y ;
-                        labels.get(y.getId()).cost = TotalCout;
+                        labels.get(y.getId()).cost = NewCoutFromOrigin;
                         labels.get(y.getId()).parent = x.me;
                         try {
                             tas.remove(labels.get(y.getId()));
