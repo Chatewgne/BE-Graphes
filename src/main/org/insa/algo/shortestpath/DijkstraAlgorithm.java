@@ -49,7 +49,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             if (tas.isEmpty()) {
                 break;
             }
-            Label x = tas.deleteMin() ;
+            Label x = tas.deleteMin();
             if(x.me.equals(data.getOrigin())){notifyOriginProcessed(x.me);}
             x.marked = true;
             notifyNodeMarked(x.me);

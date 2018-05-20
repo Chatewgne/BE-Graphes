@@ -1,4 +1,5 @@
 package org.insa.algo.shortestpath;
+import org.insa.algo.AbstractInputData;
 import org.insa.algo.AbstractSolution;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.algo.shortestpath.AstarLabel;
@@ -30,16 +31,13 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         // Initialize array of distances.
         ArrayList<AstarLabel> labels = new ArrayList<>(nbNodes);
         for (int i = 0; i < nbNodes; i++) {
-            labels.add(new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
-            //labels[i] = new Label(null, null, false, Double.POSITIVE_INFINITY);
+            labels.add(null);
         }
-        AstarLabel labi = new AstarLabel(data.getOrigin(), null, false, 0.0, data.getOrigin().getPoint().distanceTo(data.getDestination().getPoint()));
+        AstarLabel labi = new AstarLabel(data.getOrigin(), null, false, 0.0,Double.POSITIVE_INFINITY);
         labels.set(data.getOrigin().getId(), labi);
 
-        BinaryHeap<AstarLabel> tas= new BinaryHeap<>();
+        BinaryHeap<AstarLabel> tas = new BinaryHeap<>();
         tas.insert(labels.get(data.getOrigin().getId()));
-        //BinaryHeap<Node> tas = new BinaryHeap<>();
-        //tas.insert(data.getOrigin());
 
         while (!done)
         {
@@ -63,22 +61,32 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                 AstarLabel label_y = labels.get(y.getId());
                 // Allocation du label
                 if (label_y == null) {
-                    labels.set(y.getId(), new AstarLabel(null, null, false, Double.POSITIVE_INFINITY, y.getPoint().distanceTo(data.getDestination().getPoint())));
+                    labels.set(y.getId(), new AstarLabel(null, null, false, Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY));
                     label_y = labels.get(y.getId());
                 }
 
                 if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
                 {
-                    labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
-                    double TotalAncienCout = labels.get(y.getId()).getCoutTotal();
+                    double TotalAncienCout = labels.get(y.getId()).cost;
                     double NewCoutFromOrigin = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
-                    double TotalCout = NewCoutFromOrigin + labels.get(y.getId()).estimatedGoalDistance ;
                     notifyNodeReached(y);
-                    if (TotalCout < TotalAncienCout)
+                    if (NewCoutFromOrigin < TotalAncienCout)
                     {
                         labels.get(y.getId()).me = y ;
-                        labels.get(y.getId()).cost = TotalCout;
+                        labels.get(y.getId()).cost = NewCoutFromOrigin;
                         labels.get(y.getId()).parent = x.me;
+                        if (data.getMode() == AbstractInputData.Mode.TIME) {
+                            if (data.getMaximumSpeed() > 0) {
+                                labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint()) / data.getMaximumSpeed() ;
+                            }
+                            else {
+                                labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint()) / 36.111;
+                            }
+                            //System.out.println(y.getPoint().distanceTo(data.getDestination().getPoint()) + "/" + data.getMaximumSpeed());
+                        }
+                        else {
+                            labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
+                        }
                         try {
                             tas.remove(labels.get(y.getId()));
                         }
