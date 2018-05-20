@@ -23,70 +23,64 @@ import org.junit.Test;
 
 public class PerformanceTest {
 
-    private static Graph graph;
+    private static void generateInputFile(String mapPath, int size, String outputPath, int arcInsp) throws IOException{
+    DataGenerator da = new DataGenerator(mapPath, size, outputPath, arcInsp);
+        da.createFile();
+    DataReader d = new DataReader(outputPath);
+        System.out.println(d.outputLine(0));
+        System.out.println(d.nbLines());
+}
 
-    @BeforeClass
-    public static void initAll() throws IOException {
-        String mapName = "../maps/toulouse.mapgr";
+    private static void runTestOnFile(String inputFile, int arcInspectorId, String outputFile) throws IOException {
+        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspectorId);
+        DataReader dataReader = new DataReader(inputFile);
+        String mapName =System.getProperty("user.dir") + dataReader.outputLine(0); // renvoie ligne 0 -> nom de la map
         GraphReader reader =  new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-        graph = reader.read();
-        /*PrintWriter printw = new PrintWriter("inpuuut.txt","UTF-8");
-        printw.println("KOUKOU");
-        printw.println("T");
-        printw.close();*/
-        File file = new File("save.txt");
+        Graph graph = reader.read();
+        File file1= new File(outputFile+".txt");
+        File file2= new File(outputFile+".csv");
         try {
-
-            file.createNewFile();
+            file1.createNewFile();
+            file2.createNewFile();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+
         try {
-            PrintWriter pw = new PrintWriter(file);
-            pw.println("Hello World");
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+            PrintWriter pwtxt = new PrintWriter(file1);
+            PrintWriter pwcsv = new PrintWriter(file2);
+            pwtxt.println("Carte de tests :"+dataReader.outputLine(0));
 
-    @Test
-    public void generateInputFile() throws IOException{
-       // java.nio.file.Path p = Paths.get("./input.txt");
-        System.out.println(("KOUKOU"));
-
-
-          //  FileWriter filew = new FileWriter("./input.txt");
-
-        /*
-        for (int n=0;n<2;n++){
-
-            Random rand = new Random();
-            int  or = rand.nextInt(graph.size()) + 1;
-            int des = rand.nextInt(graph.size()) + 1;
-            ArcInspector insp = ArcInspectorFactory.getAllFilters().get(0); // arcInspectorId = 0 ici, changer ??
-            ShortestPathData data = new ShortestPathData(graph, graph.get(or), graph.get(des), insp);
+        for(int i =1;i< dataReader.nbLines();i++){
+            String[] nodes = dataReader.outputLine(i).split(";");
+            int origin = Integer.parseInt(nodes[0]);
+            int destination= Integer.parseInt(nodes[1]);
+            pwtxt.println("====================================================");
+            pwtxt.println("Test " + i + ": node d'origine "+origin+" -> node de destination "+destination);
+            ShortestPathData data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), insp);
             BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
             ShortestPathSolution bell_sol = Bell.run();
-            if(bell_sol.isFeasible()){
-               /* try (PrintWriter out = new PrintWriter(
-                        Files.newOutputStream(p, CREATE, APPEND))) {
-                    out.println(or+";"+des);
-                } catch (IOException x) {
-                    System.err.println(x);
-                }*//*
-               printw.println("bite");
-            }
+            DijkstraAlgorithm Dijk = new DijkstraAlgorithm(data);
+            ShortestPathSolution dijk_sol = Dijk.run();
+            AStarAlgorithm Asta = new AStarAlgorithm(data);
+            ShortestPathSolution asta_sol = Asta.run();
+            pwtxt.println("Durée BellmanFord : " + bell_sol.getSolvingTime().toMillis());
+            pwtxt.println("Durée Dijkstra : " + dijk_sol.getSolvingTime().toMillis());
+            pwtxt.println("Durée A* : " + asta_sol.getSolvingTime().toMillis());
+            pwcsv.println(bell_sol.getSolvingTime().toMillis()+","+dijk_sol.getSolvingTime().toMillis()+","+asta_sol.getSolvingTime().toMillis());
         }
-        printw.close();*/
+            pwtxt.close();
+            pwcsv.close();
+
+        } catch(FileNotFoundException e){
+        e.printStackTrace();
+        }
+
     }
-/*
-    private void generateOutputFile(Node u, Node i, int arcInspectorId){
-        ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspectorId);
-        ShortestPathData data = new ShortestPathData(graph, u, i, insp);
-    }*/
 
-
-
+    public static void main(String args[]) throws IOException{
+        generateInputFile("/maps/toulouse.mapgr", 3, "fichier2.txt", 0);
+        runTestOnFile("fichier2.txt",0,"fichier2results");
+    }
 
 }
