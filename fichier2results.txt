@@ -1,0 +1,51 @@
+Carte de tests :/maps/toulouse.mapgr
+====================================================
+Test 1: node d'origine 35303 -> node de destination 35673
+Durée BellmanFord : 560
+Durée Dijkstra : 2899
+Durée A* : 302
+====================================================
+Test 2: node d'origine 25074 -> node de destination 26546
+Durée BellmanFord : 928
+Durée Dijkstra : 836
+Durée A* : 222
+====================================================
+Test 3: node d'origine 315 -> node de destination 1631
+Durée BellmanFord : 812
+Durée Dijkstra : 1402
+Durée A* : 9
+====================================================
+Test 4: node d'origine 10409 -> node de destination 18719
+Durée BellmanFord : 811
+Durée Dijkstra : 1723
+Durée A* : 516
+====================================================
+Test 5: node d'origine 12051 -> node de destination 9882
+Durée BellmanFord : 804
+Durée Dijkstra : 3943
+Durée A* : 2036
+====================================================
+Test 6: node d'origine 16156 -> node de destination 34530
+Durée BellmanFord : 1000
+Durée Dijkstra : 6
+Durée A* : 2
+====================================================
+Test 7: node d'origine 23068 -> node de destination 10966
+Durée BellmanFord : 962
+Durée Dijkstra : 3596
+Durée A* : 2925
+====================================================
+Test 8: node d'origine 7719 -> node de destination 36766
+Durée BellmanFord : 745
+Durée Dijkstra : 2127
+Durée A* : 420
+====================================================
+Test 9: node d'origine 8090 -> node de destination 38170
+Durée BellmanFord : 711
+Durée Dijkstra : 175
+Durée A* : 5
+====================================================
+Test 10: node d'origine 13733 -> node de destination 19373
+Durée BellmanFord : 1077
+Durée Dijkstra : 343
+Durée A* : 86

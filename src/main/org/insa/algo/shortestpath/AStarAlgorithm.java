@@ -67,13 +67,13 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
                 if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
                 {
-                    double TotalAncienCout = labels.get(y.getId()).cost;
-                    double NewCoutFromOrigin = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
+                    double OldCost = labels.get(y.getId()).cost;
+                    double NewCostFromOrigin = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
                     notifyNodeReached(y);
-                    if (NewCoutFromOrigin < TotalAncienCout)
+                    if (NewCostFromOrigin < OldCost)
                     {
                         labels.get(y.getId()).me = y ;
-                        labels.get(y.getId()).cost = NewCoutFromOrigin;
+                        labels.get(y.getId()).cost = NewCostFromOrigin;
                         labels.get(y.getId()).parent = x.me;
                         if (data.getMode() == AbstractInputData.Mode.TIME) {
                             if (data.getMaximumSpeed() > 0) {

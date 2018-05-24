@@ -3,22 +3,14 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import static java.nio.file.StandardOpenOption.*;
-import java.nio.file.*;
 import java.io.*;
 
-import org.insa.algo.AbstractInputData;
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.*;
-import org.insa.graph.RoadInformation.RoadType;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.GraphReader;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class DataGenerator {
 
@@ -35,9 +27,6 @@ public class DataGenerator {
     }
 
     public void createFile() throws java.io.IOException {
-//        String mapName = System.getProperty("user.dir") + "/maps/toulouse.mapgr";
-
-//        GraphReader reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
         GraphReader reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(System.getProperty("user.dir") +mapPath))));
 
         Graph graph = reader.read();

@@ -6,24 +6,29 @@ date : 20 Mai 2018
 
 # Introduction 
 
-Le but de ce Bureau d'étude est de nous faire découvrir les méthodes modernes de programmation utilisée en entreprise au travers de l'implémentation de deux algorithmes de recherches de chemin. Nous commençons par implémenter les structures de données nécessaires à leur implémentation (file de priorité) pour ensuite implémenter un algorithme de Dijkstra et un algorithme d'Astar. Enfin nous écrivons des tests unitaires pour vérifier l'implémentation de nos algorithmes.
+L'objectif de ce bureau d'étude est de nous faire découvrir les méthodes modernes de programmation utilisées en entreprise au travers de l'implémentation de deux algorithmes de recherche de chemin. Nous commençons par construire les structures de données nécessaires à leur implémentation (file de priorité, classes objets) pour ensuite implémenter un algorithme de Dijkstra et un algorithme d'A*. Enfin nous écrivons des tests unitaires pour vérifier le fonctionnement de nos solutions et des tests de perfomance permettant de comparer les différents algorithmes étudiés.
 
-Pour terminer ce Bureau d'étude il nous est demandé de réfléchir à un problème de graphe dit "ouvert".
+Pour terminer ce bureau d'étude nous sommes confrontés à un problème de graphes pour lequel nous devons proposer un traitement algorithmique cohérent.
 
 # Documents de conception
 
-Afin de se familiariser avec la librairie Java qui nous est fournie nous avons réalisé un graphe UML des différentes classes en rapport avec les graphes.
-![UML](UML.png){width=70%}
+Afin de nous familiariser avec la librairie Java qui nous est fournie, nous avons réalisé un graphe UML des différentes classes à utiliser.
 
-## Label
+# Classes développées
+
+## Labels
+
+L'utilisation des algorithmes de Dijskstra et A* nécessite la création de classes `Label` afin d'attribuer des propriétés aux nœuds qui sont mises à jour au cours du parcours du graphe.
 
 ### DijkstraLabel
 
-Le `Label` pour l'algorithme de Dijkstra est assez simple, il contiens quatre membres :
-* un booléen représente le fait qu'il soit marqué ou non
-* le nœud parent par lequel il faut passer pour arriver à ce label
-* le coût total pour arriver au label
+Le `Label` pour l'algorithme de Dijkstra est assez succinct, il contient quatre membres :
 * le nœud associé au label
+* le nœud parent, par lequel on arrive au nœud courant dans le parcours du graphe
+* le coût total pour arriver au nœud courand
+* un booléen qui représente le marquage des nœuds
+
+
 
 ```java
 // ... classe Label
@@ -33,7 +38,7 @@ public double cost ;
 public Node me;
 ```
 
-Ainsi pour comparer des `Label` on peut se contenter d'implémenter `Comparable<Label>` et de comparer le membre `Label::cost` :
+Ainsi pour comparer des `Label` on peut se contenter d'implémenter `Comparable<Label>` et de comparer le membre `cost` :
 ```java
 // ... classe Label
 @Override
@@ -45,7 +50,7 @@ public int compareTo(Label label) {
 
 ### AstarLabel
 
-Nous avons eu beaucoup de mal a implémenté cette classe : nous voulions à la base hériter de `DijkstraLabel` mais cela nous empêché d'implémenter la comparaison entre deux label de manière correcte à cause des limitations du langage. C'est pourquoi nous avons dupliqué le code et rajouté un membre à la classe `DijkstraLabel` qui est de toutes façons très petite.
+Pour implémenter cette classe, nous voulions à la base hériter de `DijkstraLabel` mais cela nous empêché d'implémenter la comparaison entre deux labels de manière satisfaisante. C'est pourquoi nous avons dupliqué le code et rajouté un membre à la classe `DijkstraLabel` qui est de toute façon très petite.
 Les membres sont alors :
 ```java
 // ... classe AstarLabel
@@ -95,7 +100,7 @@ BinaryHeap<Label> tas= new BinaryHeap<>();
 tas.insert(labels.get(data.getOrigin().getId()));
 ```
 
-On peut maintenant exécuter l'algorithme ! On boucle sur `!done` et on sors de la boucle quand la file de priorité est vide.
+On peut maintenant exécuter l'algorithme : on boucle sur `!done` et on sort de la boucle quand la file de priorité est vide.
 
 ```java
 while (!done)
@@ -116,7 +121,7 @@ Sinon on récupère le prochain `Label` `x` à tester grâce à la file de prior
         notifyDestinationReached(x.me);
     }
 ```
-On parcours les voisins `y` du nœud associé au `Label` et on alloue les `Label` quand c'est nécessaire.
+On parcourt les voisins `y` du nœud associé au `Label` et on alloue les `Label` quand c'est nécessaire.
 
 ```java
     Iterator<Arc> it = graph.get(x.me.getId()).iterator();
@@ -206,17 +211,17 @@ catch (Exception e) {
 }
 ```
 
-## Astar
+## A*
 
-L'implémentation de l'Astar est la même que celle du Dijkstra sauf que l'on utilise des `AstarLabel` au lieu des `Label` normaux. Lors de l'allocation d'un `AstarLabel` le coût heuristique est donnée par la distance à vol d'oiseau entre le nœud associé à ce label et le but de l'algorithme.
+L'implémentation de l'A* est la même que celle du Dijkstra sauf que l'on utilise des `AstarLabel` au lieu des `Label` normaux. Lors de l'allocation d'un `AstarLabel` le coût heuristique est donnée par la distance à vol d'oiseau entre le nœud associé à ce label et le but de l'algorithme.
 
 # Tests unitaires
 
-Pour les tests nous avons décidé d'essayer d'être le plus exhaustif possible c'est à dire que nous avons de nombreux cas de test.
+Pour les tests nous avons décidé d'essayer d'être le plus exhaustif possible c'est-à-dire que nous avons de nombreux cas de test.
 
-Nous avons tout d'abord un test "manuel", c'est à dire que sur un graphe simple nous avons calculé à la main le résultat du Dijkstra pour tous les nœuds de départs et d'arrivées et nous avons vérifié (de manière automatique) que nos algorithmes" trouve les mêmes résultats. 
+Nous avons tout d'abord effectué un test "manuel", c'est à dire que sur un graphe simple nous avons calculé à la main le résultat du Dijkstra pour tous les nœuds de départs et d'arrivées et nous avons vérifié (de manière automatique) que nos algorithmes" trouvent les mêmes résultats. 
 
-Dans le cas de la carte de Toulouse, nous vérifions que le Dijkstra, le Bellman-Ford et l'Astar trouve bien des solutions de la même longueur ou de la même durée si on fais une recherche en temps.
+Dans le cas de la carte de Toulouse, nous vérifions que le Dijkstra et l'A* trouvent bien des solutions de la même longueur (ou de la même durée si on fait une recherche en temps) que le Bellman-Ford qui est utilisé comme oracle.
 
 Pour cela nous avons commencé par écrire une routine de test :
 
@@ -258,16 +263,16 @@ private void testShortestPathAlgorithm(Node u, Node i, Graph g, int arcInspector
 Cette routine compare le résultat des trois algorithmes en les lançant à partir du nœud `u` jusqu'au nœud `i` avec l'`ArcInspector` donné en argument.
 
 
-Ensuite à l'aide de l'interface graphique nous avons déterminé des paires de nœuds qui nous semble intéressante et nous avons vérifié que les algorithmes se comportent bien correctement.
+Ensuite à l'aide de l'interface graphique nous avons déterminé des paires de nœuds qui nous semblent intéressantes et nous avons vérifié que les algorithmes se comportent correctement.
 On a porté une attention toute particulière à :
 
 * le fait que l'algorithme n'emprunte pas des chemins interdits (comme le pont réservé au bus à côté de l'INSA).
 * le fait que la recherche du chemin le plus court ait un temps de trajet supérieur ou égal au résultat de la recherche du chemin le plus rapide, et inversement pour la longueur du chemin.
-* que l'algorithme se comporte bien sur des chemins très long (traverser tout Toulouse)
-* que l'algorithme se comporte correctement quand on lui donne un point d'origine égal à sa destination
-* que l'algorithme ne trouve pas de chemins quand il n'y en a pas
+* que l'algorithme se comporte bien sur des chemins très long (traverser tout Toulouse).
+* que l'algorithme se comporte correctement quand on lui donne un point d'origine égal à sa destination.
+* que l'algorithme ne trouve pas de chemin quand il n'y en a pas.
 
-Enfin, nous avons testé pour les 6 `ArcInspector` que les trois algorithmes trouve des résultats identiques sur 5 chemins que nous avons déterminé à la main.
+Enfin, nous avons testé pour les 6 `ArcInspector` que les trois algorithmes trouvent des résultats identiques sur 5 chemins que nous avons déterminé à la main.
 
 Nous avons aussi rajouté un nouvel `ArcInspector` qui simule un déplacement à vélo.
 
@@ -306,16 +311,49 @@ Cet `ArcInspector` supplémentaire nous a été très utile car grâce à lui no
 Nous avons notamment eu un problème en partant du nœud *35052* et en allant au nœud *16597* sur `toulouse.mapgr`, qui semble être un problème sur le fichier de la carte de Toulouse.
 
 En conclusion, nous avons eu une démarche de test visant à couvrir le plus de cas possibles de manière automatique et cela nous a permis de détecter très rapidement les régressions dans notre code. En effet il nous est arrivé de modifier le code de notre algorithme et avoir une suite de test toute prête nous a permis de vérifier que celui-ci marchait au moins aussi bien qu'avant.
-De plus les tests nous ont permis de vérifier l'implémentation de l'Astar de manière automatique. Nous sommes donc très satisfait d'avoir passé du temps à écrire ces tests car cela a été un vrai gain de temps et nous avons très vite rentabilisé le temps passé à écrire des tests. 
+De plus les tests nous ont permis de vérifier l'implémentation de l'A* de manière automatique. Nous sommes donc très satisfaits d'avoir passé du temps à écrire ces tests car cela a été un vrai gain de temps et nous avons très vite rentabilisé le temps passé à écrire des tests.
 
 # Tests de performance
 
-TODO <3
+On réalise une campagne de tests afin d'évaluer les performances des différents algorithmes. On cherche à lancer un grand nombre de tests afin d'avoir un échantillon suffisament représentatif pour jauger les performances avec la plus grande précision possible. On va donc chercher le plus court chemin pour un grand nombre de couples de noeuds et s'intéresser à la durée d'éxecution de chaque algorithme, ainsi qu'au nombre de noeuds parcourus et la taille maximale de la file de priorité.
+
+## Structures développées pour les tests
+
+Afin de tester les performances de nos différents algorithmes, nous avons du générer un large panel de données sous forme de fichiers inclus dans le projet. On génère deux types de fichiers : les fichiers "d'entrée" qui contiennent une liste de couples de points pour une carte particulière spécifiée en première ligne, et les fichiers "de sortie" qui contiennent les résultats obtenus par nos algorithmes pour chaque couple de points soumis en entrée.
+Pour gérer cela, nous avons décidé de créer deux classes spécialisées `DataGenerator` et `DataReader` qui utilisent la classe java `PrintWriter` pour écrire et lire dans les fichiers d'entrée directement de la manière qui nous intéresse. La classe `PerformanceTest` utilise ces deux classes pour soumettre les algorithmes aux couples de points obtenus et génère les fichiers de sortie.
+Ceci nous a permi de générer toutes ces données de manière automatique, afin de pouvoir les exploiter et analyser les algorithmes.
+
+### DataGenerator
+
+Cette classe est utilisée pour générer un fichier d'entrée pour une carte donnée `mapPath`, une taille donnée `size` et un arcInspector voulu. La méthode `createFile()` écrit dans un fichier de sortie `size` couples de points aléatoires pour lesquels il existe un chemin (vérifié grâce à Bellman-Ford toujours employé comme oracle avec l'arcInspector correspondant).
+
+### DataReader
+
+Cette classe permet de lire un fichier généré par `DataGenerator` et fourni deux méthodes : `nbLines()` renvoie le nombre de lignes du fichier et `outputLine(int lineNb)` renvoie la ligne `lineNb` du fichier.
+
+### PerformanceTest
+
+Le corps principal de cette classe génère des fichiers d'entrée de différentes tailles pour différentes cartes grâce à `DataGenerator` puis lit ces fichiers grâce à `DataReader` et soumet chaque couple de points aux algorithmes, dont elle écrit les résultats dans un fichier de sortie.
+
+TODO IMAGES DES FICHIERS
+
+## Exploitation des résultats 
+
+### Tests sur la carte de Toulouse
+
+TODO DATA
+
+### Tests sur la carte de France
+
+TODO DATA
+
+On constate qu'A* est beaucoup plus perfomant que Dijkstra en terme de temps d'éxécution et de noeuds parcouru même si la file d'attente a tendance à être plus grande. Ceci est cohérent puisqu'A* est une amélioration de Dijsktra utilisant une heuristique pour avoir un parcours plus "direct" là où Dijkstra parcourt les noeuds selon un rayon qui s'étend dans toutes les directions.
+
+TODO IMAGES DU PARCOURS
 
 # Problème ouvert
-
 <3
 
 # Conclusion
 
-Durant ce Bureau d'étude nous avons pu découvrir les méthodes modernes de programmation : utilisation de Java 8, développement d'une suite de test, benchmark du code, etc. Nous avons aussi pu mettre en pratique le cours de programmation orienté objet (POO) en nous insérant au milieu d'un projet déjà construit. On a aussi réalisé un graphe `UML` des différentes classes du projet.
+Durant ce Bureau d'étude nous avons pu découvrir les méthodes modernes de programmation : utilisation de Java 8, développement d'une suite de tests, benchmark du code, etc. Nous avons aussi pu mettre en pratique le cours de programmation orienté objet (POO) en nous insérant au milieu d'un projet déjà construit. On a aussi réalisé un graphe `UML` des différentes classes du projet.

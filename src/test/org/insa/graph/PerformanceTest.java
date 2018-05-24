@@ -64,9 +64,9 @@ public class PerformanceTest {
             ShortestPathSolution dijk_sol = Dijk.run();
             AStarAlgorithm Asta = new AStarAlgorithm(data);
             ShortestPathSolution asta_sol = Asta.run();
-            pwtxt.println("Durée BellmanFord : " + bell_sol.getSolvingTime().toMillis());
-            pwtxt.println("Durée Dijkstra : " + dijk_sol.getSolvingTime().toMillis());
-            pwtxt.println("Durée A* : " + asta_sol.getSolvingTime().toMillis());
+            pwtxt.println("Durée BellmanFord : " + bell_sol.getSolvingTime().toMillis() + " ms");
+            pwtxt.println("Durée Dijkstra : " + dijk_sol.getSolvingTime().toMillis() + " ms");
+            pwtxt.println("Durée A* : " + asta_sol.getSolvingTime().toMillis() + " ms");
             pwcsv.println(bell_sol.getSolvingTime().toMillis()+","+dijk_sol.getSolvingTime().toMillis()+","+asta_sol.getSolvingTime().toMillis());
         }
             pwtxt.close();
@@ -79,7 +79,7 @@ public class PerformanceTest {
     }
 
     public static void main(String args[]) throws IOException{
-        generateInputFile("/maps/toulouse.mapgr", 3, "fichier2.txt", 0);
+        generateInputFile("/maps/toulouse.mapgr", 10, "fichier2.txt", 0);
         runTestOnFile("fichier2.txt",0,"fichier2results");
     }
 
