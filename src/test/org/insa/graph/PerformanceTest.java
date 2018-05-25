@@ -79,7 +79,7 @@ public class PerformanceTest {
     }
 
     public static void main(String args[]) throws IOException{
-        generateInputFile("/maps/toulouse.mapgr", 10, "fichier2.txt", 0);
+        generateInputFile("/maps/midi-pyrenees.mapgr", 10, "fichier2.txt", 0);
         runTestOnFile("fichier2.txt",0,"fichier2results");
     }
 

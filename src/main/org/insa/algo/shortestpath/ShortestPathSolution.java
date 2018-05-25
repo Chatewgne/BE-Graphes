@@ -10,6 +10,10 @@ public class ShortestPathSolution extends AbstractSolution {
     // Optimal solution.
     private Path path;
 
+    public int nodeEvaluated;
+
+    public int maxHeapSize;
+
     /**
      * {@inheritDoc}
      */
@@ -35,9 +39,11 @@ public class ShortestPathSolution extends AbstractSolution {
      * @param status Status of the solution (FEASIBLE / OPTIMAL).
      * @param path Path corresponding to the solution.
      */
-    public ShortestPathSolution(ShortestPathData data, Status status, Path path) {
+    public ShortestPathSolution(ShortestPathData data, Status status, Path path, int nodeEvaluated, int maxHeapSize) {
         super(data, status);
         this.path = path;
+        this.nodeEvaluated = nodeEvaluated;
+        this.maxHeapSize = maxHeapSize;
     }
 
     @Override

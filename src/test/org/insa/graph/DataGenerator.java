@@ -48,8 +48,8 @@ public class DataGenerator {
                 int des = rand.nextInt(graph.size()) + 1;
                 ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspector);
                 ShortestPathData data = new ShortestPathData(graph, graph.get(or), graph.get(des), insp);
-                BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
-                ShortestPathSolution bell_sol = Bell.run();
+                AStarAlgorithm Ast = new AStarAlgorithm(data);
+                ShortestPathSolution bell_sol = Ast.run();
                 if (bell_sol.isFeasible()) {
                     pw.println(or+";"+des);
                     n++;

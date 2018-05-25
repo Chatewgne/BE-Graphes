@@ -18,17 +18,8 @@ public class AstarLabel implements Comparable<AstarLabel> {
         this.estimatedGoalDistance = estimation;
     }
 
-/*
-    @Override
-    public int compareTo(Label label) {
-        Double val = this.cost - label.cost;
-        return val.intValue();
-    }*/
-
     @Override
     public int compareTo(AstarLabel label) {
-        //Double val = (this.cost + this.estimatedGoalDistance) - (label.cost + label.estimatedGoalDistance);
-        //if (val == 0) val = this.cost - label.cost;
         return (int) Math.signum((this.cost + this.estimatedGoalDistance) - (label.cost + label.estimatedGoalDistance));
     }
 

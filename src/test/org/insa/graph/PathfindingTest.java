@@ -95,6 +95,7 @@ public class PathfindingTest {
         ShortestPathSolution ast_sol = Ast.run();
 
         assertEquals(bell_sol.isFeasible(),djik_sol.isFeasible());
+        assertEquals(bell_sol.isFeasible(), ast_sol.isFeasible());
 
         if (bell_sol.isFeasible()) {
             if (insp.getMode() == AbstractInputData.Mode.LENGTH) {
@@ -106,7 +107,6 @@ public class PathfindingTest {
                 assertEquals(djik_sol.getPath().getMinimumTravelTime(), ast_sol.getPath().getMinimumTravelTime(), 1e-6);
             }
         }
-
     }
 
     @Test
@@ -140,6 +140,7 @@ public class PathfindingTest {
             start = realGraph.get(33333);
             end = realGraph.get(1);
             testShortestPathAlgorithm(start, end, realGraph, i);
+
         }
     }
 

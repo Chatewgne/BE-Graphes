@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static jdk.nashorn.internal.objects.NativeMath.max;
 import static jdk.nashorn.internal.objects.NativeMath.min;
 
 
@@ -46,12 +47,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //BinaryHeap<Node> tas = new BinaryHeap<>();
         //tas.insert(data.getOrigin());
 
+        int nodeEvaluated = 0;
+        int maxHeapSize = 0;
+
         while (!done)
         {
             if (tas.isEmpty()) {
                 break;
             }
+            if (tas.size() > maxHeapSize) {
+                maxHeapSize = tas.size();
+            }
             Label x = tas.deleteMin();
+            nodeEvaluated++;
             if(x.me.equals(data.getOrigin())){notifyOriginProcessed(x.me);}
             x.marked = true;
             notifyNodeMarked(x.me);
@@ -124,11 +132,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
 
             Path sol_path = Path.createShortestPathFromNodes(graph, result);
-            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
+            solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path, nodeEvaluated, maxHeapSize);
             return solution;
         }
         catch (Exception e) {
-            return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
+            return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null, nodeEvaluated, maxHeapSize);
         }
 
     }
