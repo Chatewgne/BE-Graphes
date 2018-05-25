@@ -90,26 +90,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         labels.get(y.getId()).me = y ;
                         labels.get(y.getId()).cost = NewCout;
                         labels.get(y.getId()).parent = x.me;
-                        try {
-                            tas.remove(labels.get(y.getId()));
+                        if (AncienCout != Double.POSITIVE_INFINITY) {
+                            try {
+                                tas.remove(labels.get(y.getId()));
+                            } catch (ElementNotFoundException ignored) {}
                         }
-                        catch (ElementNotFoundException ignored){}
-
                         tas.insert(labels.get(y.getId()));
                     }
                 }
             }
-            /*
-            if (!done) {
-                done = true;
-                for (Label lab : labels) {
-                    if (lab == null || !lab.marked) {
-                        done = false;
-                        break;
-                    }
-                }
-            }
-            */
         }
 
         try {

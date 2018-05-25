@@ -91,31 +91,20 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                             else {
                                 labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint()) / 36.111;
                             }
-                            //System.out.println(y.getPoint().distanceTo(data.getDestination().getPoint()) + "/" + data.getMaximumSpeed());
                         }
                         else {
                             labels.get(y.getId()).estimatedGoalDistance = y.getPoint().distanceTo(data.getDestination().getPoint());
                         }
-                        try {
-                            tas.remove(labels.get(y.getId()));
+                        if (OldCost != Double.POSITIVE_INFINITY) {
+                            try {
+                                tas.remove(labels.get(y.getId()));
+                            } catch (ElementNotFoundException ignored) {
+                            }
                         }
-                        catch (ElementNotFoundException ignored){}
-
                         tas.insert(labels.get(y.getId()));
                     }
                 }
             }
-            /*
-            if (!done) {
-                done = true;
-                for (AstarLabel lab : labels) {
-                    if (lab == null || !lab.marked) {
-                        done = false;
-                        break;
-                    }
-                }
-            }
-            */
         }
 
         try {
