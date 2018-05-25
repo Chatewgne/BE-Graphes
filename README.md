@@ -351,8 +351,17 @@ On constate qu'A* est beaucoup plus perfomant que Dijkstra en terme de temps d'�
 
 TODO IMAGES DU PARCOURS
 
-# Problème ouvert
-<3
+# Problème ouvert : covoiturage
+
+Problème : on cherche à minimiser la distance parcourue en trajet pour deux covoitureurs qui partent de deux origines $$O_1$$ et $$O_2$$ différentes et ont une destination D commune. Le problème revient donc à chercher quel est le noeud R du graphe où les covoitureurs doivent se rejoindre de manière à ce que la distance $$O_1$$P + $$O_2$$P + RD soit minimale.
+
+TODO IMAGE ?
+
+On sait que : $$0_1$$R + $$0_2$$R + RD <= $$O_1$$D + $$O_2$$D ce qui donne une borne maximale pour la longueur recherchée et permet de limiter une zone dans laquelle rechercher R (à savoir que R sera situé dans le triangle formé par $$O_1$$, $$O_2$$ et D.
+
+Algorithme général : On lance deux algorithme A* ayant pour origine les points O1 et O2 et s'orientant vers un point les rapprochant à la fois de D et de l'autre O. On pondère de manière à ce que l'algorithme priorise le rapporchement vers l'autre covoitureur quand il est proche. 
+
+Cas particuliers : Si D est situé sur le chemin le plus court entre $$O_1$$ et $$O_2$$ (caractérisé par la condition $$O_1O_2 = O_1D+O_2D$$ alors chaque covoitureur doit se rendre directement à la destination D car dans ce cas le point R et D sont le même.
 
 # Conclusion
 

@@ -8,6 +8,7 @@ doc
 *.jar
 *.pdf
 
+
 # Editor specific files and folders
 *~
 .project
