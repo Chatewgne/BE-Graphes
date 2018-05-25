@@ -1,2 +1,0 @@
-/maps/ivory-coast.mapgr
-13304;118615

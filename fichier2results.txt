@@ -1,6 +1,0 @@
-Carte de tests :/maps/ivory-coast.mapgr
-====================================================
-Test 1: node d'origine 13304 -> node de destination 118615
-Durée BellmanFord : 9900 ms
-Durée Dijkstra : 8998 ms
-Durée A* : 4817 ms
