@@ -50,6 +50,7 @@ public class PerformanceTest {
             PrintWriter pwtxt = new PrintWriter(file1);
             PrintWriter pwcsv = new PrintWriter(file2);
             pwtxt.println("Carte de tests :"+dataReader.outputLine(0));
+            pwcsv.println("Bellman temps,Bellman nodes évalués,Bell taille max du tas,Dijkstra temps,Dijkstra nodes évalués,Dijkstra taille max du tas,Astar temps,Astar nodes évalués,Astar taille max du tas");
 
         for(int i =1;i< dataReader.nbLines();i++){
             String[] nodes = dataReader.outputLine(i).split(";");
