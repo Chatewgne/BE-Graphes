@@ -81,8 +81,12 @@ public class PerformanceTest {
 
     public static void main(String args[]) throws IOException{
 
-        generateInputFile("/maps/ivory-coast.mapgr", 20, "ivorycoast20.txt", 0);
-        runTestOnFile("ivorycoast20.txt",0,"ivorycoast20results");
+        String mapName = "midi-pyrenees";
+        int nbTest = 10;
+        String outJeuTest = "/bench/" + mapName + "-" + nbTest + ".txt";
+        String outTest = "/bench/" + mapName + "-" + nbTest + "-results";
+        generateInputFile("/maps/" + mapName + ".mapgr", nbTest, outJeuTest, 0);
+        runTestOnFile(outJeuTest,0,outTest);
     }
 
 }
