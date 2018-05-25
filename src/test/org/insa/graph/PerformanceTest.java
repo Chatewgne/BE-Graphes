@@ -82,8 +82,8 @@ public class PerformanceTest {
 
         String mapName = "midi-pyrenees";
         int nbTest = 10;
-        String outJeuTest = "/bench/" + mapName + "-" + nbTest + ".txt";
-        String outTest = "/bench/" + mapName + "-" + nbTest + "-results";
+        String outJeuTest = "bench/" + mapName + "-" + nbTest + ".txt";
+        String outTest = "bench/" + mapName + "-" + nbTest + "-results";
         generateInputFile("/maps/" + mapName + ".mapgr", nbTest, outJeuTest, 0);
         runTestOnFile(outJeuTest,0,outTest);
     }
