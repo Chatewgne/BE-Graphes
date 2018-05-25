@@ -9,13 +9,11 @@ import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static jdk.nashorn.internal.objects.NativeMath.max;
 import static jdk.nashorn.internal.objects.NativeMath.min;
+import static jdk.nashorn.internal.runtime.ScriptObject.spillAllocationLength;
 
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
@@ -34,16 +32,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = graph.size();
         boolean done = false ;
         // Initialize array of distances.
-        ArrayList<Label> labels = new ArrayList<>(nbNodes);
-        for (int i = 0; i < nbNodes; i++) {
-            labels.add(null);
+        Map<Node, Label> labels = new HashMap<>(nbNodes);
+       // for (int i = 0; i < nbNodes; i++) {
+         //   labels.add(null);
             //labels[i] = new Label(null, null, false, Double.POSITIVE_INFINITY);
-        }
+        //}
         Label labi = new Label(data.getOrigin(), null, false, 0.0);
-        labels.set(data.getOrigin().getId(), labi);
+        labels.put(data.getOrigin(),labi);
 
         BinaryHeap<Label> tas= new BinaryHeap<>();
-        tas.insert(labels.get(data.getOrigin().getId()));
+        tas.insert(labels.get(data.getOrigin()));
         //BinaryHeap<Node> tas = new BinaryHeap<>();
         //tas.insert(data.getOrigin());
 
@@ -73,29 +71,33 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             {
                 Arc arc = it.next();
                 Node y = arc.getDestination();
-                Label label_y = labels.get(y.getId());
-                // Allocation du label
-                if (label_y == null) {
-                    labels.set(y.getId(), new Label(null, null, false, Double.POSITIVE_INFINITY));
-                    label_y = labels.get(y.getId());
+                Label label_y;
+
+                if (labels.containsKey(y)) {
+                    label_y = labels.get(y);
+                }
+                else {
+                    label_y = new Label(null, null, false, Double.POSITIVE_INFINITY);
+                    labels.put(y,label_y);
                 }
 
-                if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
+                if (!(label_y.marked) && !y.equals(x.me) && data.isAllowed(arc))
                 {
-                    double AncienCout = labels.get(y.getId()).cost;
-                    double NewCout = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
+                    double AncienCout = labels.get(y).cost;
+                    double NewCout = labels.get(arc.getOrigin()).cost + data.getCost(arc);
                     notifyNodeReached(y);
                     if (NewCout < AncienCout)
                     {
-                        labels.get(y.getId()).me = y ;
-                        labels.get(y.getId()).cost = NewCout;
-                        labels.get(y.getId()).parent = x.me;
+                        Label y_lab = labels.get(y);
+                        y_lab.me = y ;
+                        y_lab.cost = NewCout;
+                        y_lab.parent = x.me;
                         if (AncienCout != Double.POSITIVE_INFINITY) {
                             try {
-                                tas.remove(labels.get(y.getId()));
+                                tas.remove(labels.get(y));
                             } catch (ElementNotFoundException ignored) {}
                         }
-                        tas.insert(labels.get(y.getId()));
+                        tas.insert(labels.get(y));
                     }
                 }
             }
@@ -110,7 +112,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             boolean done_rebuilding = false;
             while (! done_rebuilding) {
                 result.add(current);
-                current = labels.get(current.getId()).parent;
+                current = labels.get(current).parent;
 
                 if (current.equals(data.getOrigin())) {
                     done_rebuilding = true;
