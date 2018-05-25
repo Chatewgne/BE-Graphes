@@ -90,7 +90,7 @@ public class BellmanFordAlgorithm extends ShortestPathAlgorithm {
 			Collections.reverse(arcs);
 
 			// Create the final solution.
-			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs), 0, 0);
 		}
 
 		return solution;
