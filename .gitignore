@@ -21,4 +21,6 @@ doc
 /out/
 *.eml
 *.xml
+*.ods
+
 src/BE-Graphes.iml
