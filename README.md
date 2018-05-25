@@ -325,7 +325,7 @@ Ceci nous a permi de générer toutes ces données de manière automatique, afin
 
 ### DataGenerator
 
-Cette classe est utilisée pour générer un fichier d'entrée pour une carte donnée `mapPath`, une taille donnée `size` et un arcInspector voulu. La méthode `createFile()` écrit dans un fichier de sortie `size` couples de points aléatoires pour lesquels il existe un chemin (vérifié grâce à Bellman-Ford toujours employé comme oracle avec l'arcInspector correspondant).
+Cette classe est utilisée pour générer un fichier d'entrée pour une carte donnée `mapPath`, une taille donnée `size` et un arcInspector voulu. La méthode `createFile()` écrit dans un fichier de sortie `size` couples de points aléatoires pour lesquels il existe un chemin (vérifié en lançant un A* puisqu'on on a confirmé son fonctionnement, avec l'arcInspector correspondant).
 
 ### DataReader
 

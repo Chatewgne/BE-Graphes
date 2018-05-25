@@ -9,7 +9,7 @@ public class ShortestPathSolution extends AbstractSolution {
 
     // Optimal solution.
     private Path path;
-    
+
     public int nodeEvaluated;
 
     public int maxHeapSize;

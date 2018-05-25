@@ -55,7 +55,7 @@ public class PerformanceTest {
             String[] nodes = dataReader.outputLine(i).split(";");
             int origin = Integer.parseInt(nodes[0]);
             int destination= Integer.parseInt(nodes[1]);
-            pwtxt.println("====================================================");
+            pwtxt.println("=====================================================================");
             pwtxt.println("Test " + i + ": node d'origine "+origin+" -> node de destination "+destination);
             ShortestPathData data = new ShortestPathData(graph, graph.get(origin), graph.get(destination), insp);
             BellmanFordAlgorithm Bell = new BellmanFordAlgorithm(data);
@@ -64,10 +64,10 @@ public class PerformanceTest {
             ShortestPathSolution dijk_sol = Dijk.run();
             AStarAlgorithm Asta = new AStarAlgorithm(data);
             ShortestPathSolution asta_sol = Asta.run();
-            pwtxt.println("BellmanFord : " + bell_sol.getEvaluated() + "nodes évalués en " + bell_sol.getSolvingTime().toMillis() + " ms");
-            pwtxt.println("Dijkstra : " + dijk_sol.getEvaluated() + "nodes évalués en " + dijk_sol.getSolvingTime().toMillis() + " ms");
-            pwtxt.println("A* : " + asta_sol.getEvaluated() + "nodes évalués en "+ asta_sol.getSolvingTime().toMillis() + " ms");
-            pwcsv.println(bell_sol.getSolvingTime().toMillis()+","+dijk_sol.getSolvingTime().toMillis()+","+asta_sol.getSolvingTime().toMillis());
+            pwtxt.println("BellmanFord : éxecution en "+ bell_sol.getSolvingTime().toMillis() + " ms");
+            pwtxt.println("Dijkstra : " + dijk_sol.nodeEvaluated + " nodes évalués en " + dijk_sol.getSolvingTime().toMillis() + " ms avec un tas de "+ dijk_sol.maxHeapSize +" noeuds max");
+            pwtxt.println("A* : " + asta_sol.nodeEvaluated+ " nodes évalués en "+ asta_sol.getSolvingTime().toMillis() + " ms avec un tas de "+ asta_sol.maxHeapSize +" noeuds max");
+            pwcsv.println(bell_sol.getSolvingTime().toMillis()+",0,0,"+dijk_sol.getSolvingTime().toMillis()+","+dijk_sol.nodeEvaluated+","+dijk_sol.maxHeapSize+","+asta_sol.getSolvingTime().toMillis()+","+asta_sol.nodeEvaluated+","+asta_sol.maxHeapSize);
         }
             pwtxt.close();
             pwcsv.close();
@@ -80,8 +80,8 @@ public class PerformanceTest {
 
     public static void main(String args[]) throws IOException{
 
-        generateInputFile("/maps/ivory-coast.mapgr", 20, "ivory-coast20.txt", 0);
-        runTestOnFile("ivory-coast20.txt",0,"ivory-coast20results");
+        generateInputFile("/maps/ivory-coast.mapgr", 20, "ivorycoast20.txt", 0);
+        runTestOnFile("ivorycoast20.txt",0,"ivorycoast20results");
     }
 
 }

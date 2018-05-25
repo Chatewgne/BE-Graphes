@@ -49,8 +49,8 @@ public class DataGenerator {
                 ArcInspector insp = ArcInspectorFactory.getAllFilters().get(arcInspector);
                 ShortestPathData data = new ShortestPathData(graph, graph.get(or), graph.get(des), insp);
                 AStarAlgorithm Ast = new AStarAlgorithm(data);
-                ShortestPathSolution bell_sol = Ast.run();
-                if (bell_sol.isFeasible()) {
+                ShortestPathSolution ast_sol = Ast.run();
+                if (ast_sol.isFeasible()) {
                     pw.println(or+";"+des);
                     n++;
                 }
