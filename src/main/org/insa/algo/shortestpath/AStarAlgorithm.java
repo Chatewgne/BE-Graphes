@@ -105,7 +105,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                     }
                 }
             }
-            
+            /*
             if (!done) {
                 done = true;
                 for (AstarLabel lab : labels) {
@@ -115,7 +115,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                     }
                 }
             }
-
+            */
         }
 
         try {

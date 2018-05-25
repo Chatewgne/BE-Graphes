@@ -99,6 +99,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     }
                 }
             }
+            /*
             if (!done) {
                 done = true;
                 for (Label lab : labels) {
@@ -108,6 +109,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     }
                 }
             }
+            */
         }
 
         try {
