@@ -1,0 +1,251 @@
+Carte de tests :/maps/ivory-coast.mapgr
+=====================================================================
+Test 1: node d'origine 2537 -> node de destination 21321
+BellmanFord : éxecution en 9482 ms
+Dijkstra : 7477 nodes évalués en 60 ms avec un tas de 186 noeuds max
+A* : 2996 nodes évalués en 25 ms avec un tas de 196 noeuds max
+=====================================================================
+Test 2: node d'origine 137690 -> node de destination 108677
+BellmanFord : éxecution en 8759 ms
+Dijkstra : 5788 nodes évalués en 11 ms avec un tas de 102 noeuds max
+A* : 3199 nodes évalués en 11 ms avec un tas de 194 noeuds max
+=====================================================================
+Test 3: node d'origine 45068 -> node de destination 113476
+BellmanFord : éxecution en 10087 ms
+Dijkstra : 112698 nodes évalués en 531 ms avec un tas de 342 noeuds max
+A* : 71355 nodes évalués en 390 ms avec un tas de 451 noeuds max
+=====================================================================
+Test 4: node d'origine 9039 -> node de destination 128036
+BellmanFord : éxecution en 8796 ms
+Dijkstra : 54936 nodes évalués en 421 ms avec un tas de 390 noeuds max
+A* : 35252 nodes évalués en 244 ms avec un tas de 443 noeuds max
+=====================================================================
+Test 5: node d'origine 74342 -> node de destination 24150
+BellmanFord : éxecution en 9107 ms
+Dijkstra : 37663 nodes évalués en 280 ms avec un tas de 278 noeuds max
+A* : 2680 nodes évalués en 10 ms avec un tas de 170 noeuds max
+=====================================================================
+Test 6: node d'origine 106376 -> node de destination 97879
+BellmanFord : éxecution en 9795 ms
+Dijkstra : 112872 nodes évalués en 524 ms avec un tas de 468 noeuds max
+A* : 21659 nodes évalués en 63 ms avec un tas de 349 noeuds max
+=====================================================================
+Test 7: node d'origine 103014 -> node de destination 135057
+BellmanFord : éxecution en 12013 ms
+Dijkstra : 53397 nodes évalués en 301 ms avec un tas de 370 noeuds max
+A* : 47772 nodes évalués en 320 ms avec un tas de 497 noeuds max
+=====================================================================
+Test 8: node d'origine 65123 -> node de destination 116300
+BellmanFord : éxecution en 8041 ms
+Dijkstra : 114972 nodes évalués en 463 ms avec un tas de 356 noeuds max
+A* : 18953 nodes évalués en 111 ms avec un tas de 433 noeuds max
+=====================================================================
+Test 9: node d'origine 59438 -> node de destination 108175
+BellmanFord : éxecution en 8792 ms
+Dijkstra : 40843 nodes évalués en 299 ms avec un tas de 325 noeuds max
+A* : 25067 nodes évalués en 222 ms avec un tas de 552 noeuds max
+=====================================================================
+Test 10: node d'origine 29289 -> node de destination 112460
+BellmanFord : éxecution en 9523 ms
+Dijkstra : 37733 nodes évalués en 277 ms avec un tas de 311 noeuds max
+A* : 17110 nodes évalués en 126 ms avec un tas de 358 noeuds max
+=====================================================================
+Test 11: node d'origine 88422 -> node de destination 53380
+BellmanFord : éxecution en 9358 ms
+Dijkstra : 127783 nodes évalués en 467 ms avec un tas de 312 noeuds max
+A* : 79557 nodes évalués en 589 ms avec un tas de 551 noeuds max
+=====================================================================
+Test 12: node d'origine 100077 -> node de destination 56035
+BellmanFord : éxecution en 7570 ms
+Dijkstra : 40260 nodes évalués en 102 ms avec un tas de 209 noeuds max
+A* : 5281 nodes évalués en 12 ms avec un tas de 168 noeuds max
+=====================================================================
+Test 13: node d'origine 29704 -> node de destination 10145
+BellmanFord : éxecution en 8683 ms
+Dijkstra : 23097 nodes évalués en 213 ms avec un tas de 315 noeuds max
+A* : 4064 nodes évalués en 14 ms avec un tas de 226 noeuds max
+=====================================================================
+Test 14: node d'origine 37336 -> node de destination 3565
+BellmanFord : éxecution en 9459 ms
+Dijkstra : 32937 nodes évalués en 201 ms avec un tas de 240 noeuds max
+A* : 13609 nodes évalués en 73 ms avec un tas de 328 noeuds max
+=====================================================================
+Test 15: node d'origine 45182 -> node de destination 48377
+BellmanFord : éxecution en 8973 ms
+Dijkstra : 131115 nodes évalués en 514 ms avec un tas de 352 noeuds max
+A* : 83077 nodes évalués en 483 ms avec un tas de 552 noeuds max
+=====================================================================
+Test 16: node d'origine 136335 -> node de destination 44410
+BellmanFord : éxecution en 9754 ms
+Dijkstra : 84587 nodes évalués en 322 ms avec un tas de 268 noeuds max
+A* : 57824 nodes évalués en 411 ms avec un tas de 576 noeuds max
+=====================================================================
+Test 17: node d'origine 17101 -> node de destination 20641
+BellmanFord : éxecution en 9361 ms
+Dijkstra : 66249 nodes évalués en 290 ms avec un tas de 271 noeuds max
+A* : 44691 nodes évalués en 380 ms avec un tas de 462 noeuds max
+=====================================================================
+Test 18: node d'origine 86255 -> node de destination 15646
+BellmanFord : éxecution en 10562 ms
+Dijkstra : 38499 nodes évalués en 199 ms avec un tas de 249 noeuds max
+A* : 21293 nodes évalués en 110 ms avec un tas de 389 noeuds max
+=====================================================================
+Test 19: node d'origine 72485 -> node de destination 77023
+BellmanFord : éxecution en 10966 ms
+Dijkstra : 59915 nodes évalués en 205 ms avec un tas de 418 noeuds max
+A* : 14444 nodes évalués en 61 ms avec un tas de 357 noeuds max
+=====================================================================
+Test 20: node d'origine 37248 -> node de destination 509
+BellmanFord : éxecution en 7093 ms
+Dijkstra : 91700 nodes évalués en 315 ms avec un tas de 318 noeuds max
+A* : 21346 nodes évalués en 89 ms avec un tas de 436 noeuds max
+=====================================================================
+Test 21: node d'origine 80327 -> node de destination 44762
+BellmanFord : éxecution en 9039 ms
+Dijkstra : 5597 nodes évalués en 34 ms avec un tas de 163 noeuds max
+A* : 1233 nodes évalués en 6 ms avec un tas de 124 noeuds max
+=====================================================================
+Test 22: node d'origine 137495 -> node de destination 109925
+BellmanFord : éxecution en 7268 ms
+Dijkstra : 68715 nodes évalués en 170 ms avec un tas de 219 noeuds max
+A* : 11107 nodes évalués en 36 ms avec un tas de 354 noeuds max
+=====================================================================
+Test 23: node d'origine 106282 -> node de destination 18161
+BellmanFord : éxecution en 8782 ms
+Dijkstra : 35405 nodes évalués en 69 ms avec un tas de 204 noeuds max
+A* : 13855 nodes évalués en 38 ms avec un tas de 218 noeuds max
+=====================================================================
+Test 24: node d'origine 93505 -> node de destination 13164
+BellmanFord : éxecution en 8161 ms
+Dijkstra : 96351 nodes évalués en 345 ms avec un tas de 320 noeuds max
+A* : 34876 nodes évalués en 188 ms avec un tas de 568 noeuds max
+=====================================================================
+Test 25: node d'origine 19537 -> node de destination 126852
+BellmanFord : éxecution en 9270 ms
+Dijkstra : 107985 nodes évalués en 501 ms avec un tas de 353 noeuds max
+A* : 66057 nodes évalués en 406 ms avec un tas de 406 noeuds max
+=====================================================================
+Test 26: node d'origine 50648 -> node de destination 39384
+BellmanFord : éxecution en 11949 ms
+Dijkstra : 104140 nodes évalués en 502 ms avec un tas de 375 noeuds max
+A* : 7524 nodes évalués en 20 ms avec un tas de 161 noeuds max
+=====================================================================
+Test 27: node d'origine 10557 -> node de destination 95097
+BellmanFord : éxecution en 10091 ms
+Dijkstra : 69833 nodes évalués en 290 ms avec un tas de 288 noeuds max
+A* : 49619 nodes évalués en 350 ms avec un tas de 489 noeuds max
+=====================================================================
+Test 28: node d'origine 102367 -> node de destination 92201
+BellmanFord : éxecution en 7742 ms
+Dijkstra : 29952 nodes évalués en 91 ms avec un tas de 238 noeuds max
+A* : 5855 nodes évalués en 18 ms avec un tas de 184 noeuds max
+=====================================================================
+Test 29: node d'origine 29543 -> node de destination 115593
+BellmanFord : éxecution en 8928 ms
+Dijkstra : 84448 nodes évalués en 383 ms avec un tas de 312 noeuds max
+A* : 54610 nodes évalués en 325 ms avec un tas de 368 noeuds max
+=====================================================================
+Test 30: node d'origine 74630 -> node de destination 14731
+BellmanFord : éxecution en 11814 ms
+Dijkstra : 33481 nodes évalués en 66 ms avec un tas de 231 noeuds max
+A* : 13221 nodes évalués en 32 ms avec un tas de 242 noeuds max
+=====================================================================
+Test 31: node d'origine 97193 -> node de destination 20666
+BellmanFord : éxecution en 12427 ms
+Dijkstra : 4898 nodes évalués en 11 ms avec un tas de 156 noeuds max
+A* : 1035 nodes évalués en 2 ms avec un tas de 64 noeuds max
+=====================================================================
+Test 32: node d'origine 80533 -> node de destination 60312
+BellmanFord : éxecution en 9146 ms
+Dijkstra : 100749 nodes évalués en 472 ms avec un tas de 377 noeuds max
+A* : 49852 nodes évalués en 265 ms avec un tas de 282 noeuds max
+=====================================================================
+Test 33: node d'origine 135074 -> node de destination 12309
+BellmanFord : éxecution en 8057 ms
+Dijkstra : 32791 nodes évalués en 103 ms avec un tas de 249 noeuds max
+A* : 13066 nodes évalués en 82 ms avec un tas de 404 noeuds max
+=====================================================================
+Test 34: node d'origine 124600 -> node de destination 59765
+BellmanFord : éxecution en 8711 ms
+Dijkstra : 60213 nodes évalués en 171 ms avec un tas de 287 noeuds max
+A* : 13235 nodes évalués en 31 ms avec un tas de 162 noeuds max
+=====================================================================
+Test 35: node d'origine 4741 -> node de destination 103850
+BellmanFord : éxecution en 9777 ms
+Dijkstra : 9028 nodes évalués en 33 ms avec un tas de 171 noeuds max
+A* : 3419 nodes évalués en 17 ms avec un tas de 259 noeuds max
+=====================================================================
+Test 36: node d'origine 93011 -> node de destination 60531
+BellmanFord : éxecution en 8899 ms
+Dijkstra : 85989 nodes évalués en 274 ms avec un tas de 307 noeuds max
+A* : 29078 nodes évalués en 143 ms avec un tas de 436 noeuds max
+=====================================================================
+Test 37: node d'origine 93577 -> node de destination 80548
+BellmanFord : éxecution en 9021 ms
+Dijkstra : 64865 nodes évalués en 231 ms avec un tas de 366 noeuds max
+A* : 23748 nodes évalués en 106 ms avec un tas de 419 noeuds max
+=====================================================================
+Test 38: node d'origine 136754 -> node de destination 8043
+BellmanFord : éxecution en 7297 ms
+Dijkstra : 37245 nodes évalués en 103 ms avec un tas de 219 noeuds max
+A* : 3332 nodes évalués en 7 ms avec un tas de 129 noeuds max
+=====================================================================
+Test 39: node d'origine 11050 -> node de destination 2364
+BellmanFord : éxecution en 10716 ms
+Dijkstra : 19625 nodes évalués en 58 ms avec un tas de 176 noeuds max
+A* : 10403 nodes évalués en 49 ms avec un tas de 387 noeuds max
+=====================================================================
+Test 40: node d'origine 101996 -> node de destination 102558
+BellmanFord : éxecution en 6525 ms
+Dijkstra : 55787 nodes évalués en 186 ms avec un tas de 356 noeuds max
+A* : 11238 nodes évalués en 45 ms avec un tas de 270 noeuds max
+=====================================================================
+Test 41: node d'origine 68928 -> node de destination 50091
+BellmanFord : éxecution en 7989 ms
+Dijkstra : 70950 nodes évalués en 195 ms avec un tas de 320 noeuds max
+A* : 13574 nodes évalués en 31 ms avec un tas de 209 noeuds max
+=====================================================================
+Test 42: node d'origine 7877 -> node de destination 99472
+BellmanFord : éxecution en 7319 ms
+Dijkstra : 121641 nodes évalués en 502 ms avec un tas de 389 noeuds max
+A* : 34930 nodes évalués en 207 ms avec un tas de 603 noeuds max
+=====================================================================
+Test 43: node d'origine 86272 -> node de destination 111547
+BellmanFord : éxecution en 10947 ms
+Dijkstra : 112983 nodes évalués en 429 ms avec un tas de 311 noeuds max
+A* : 78910 nodes évalués en 528 ms avec un tas de 511 noeuds max
+=====================================================================
+Test 44: node d'origine 47443 -> node de destination 137085
+BellmanFord : éxecution en 8491 ms
+Dijkstra : 55021 nodes évalués en 186 ms avec un tas de 325 noeuds max
+A* : 20048 nodes évalués en 83 ms avec un tas de 333 noeuds max
+=====================================================================
+Test 45: node d'origine 94910 -> node de destination 93345
+BellmanFord : éxecution en 7154 ms
+Dijkstra : 6291 nodes évalués en 12 ms avec un tas de 146 noeuds max
+A* : 2199 nodes évalués en 6 ms avec un tas de 60 noeuds max
+=====================================================================
+Test 46: node d'origine 46631 -> node de destination 113152
+BellmanFord : éxecution en 9312 ms
+Dijkstra : 51005 nodes évalués en 305 ms avec un tas de 320 noeuds max
+A* : 48811 nodes évalués en 322 ms avec un tas de 449 noeuds max
+=====================================================================
+Test 47: node d'origine 69582 -> node de destination 9664
+BellmanFord : éxecution en 7875 ms
+Dijkstra : 112242 nodes évalués en 420 ms avec un tas de 347 noeuds max
+A* : 34930 nodes évalués en 237 ms avec un tas de 1047 noeuds max
+=====================================================================
+Test 48: node d'origine 131927 -> node de destination 93136
+BellmanFord : éxecution en 7065 ms
+Dijkstra : 43937 nodes évalués en 90 ms avec un tas de 218 noeuds max
+A* : 16077 nodes évalués en 38 ms avec un tas de 230 noeuds max
+=====================================================================
+Test 49: node d'origine 52511 -> node de destination 138689
+BellmanFord : éxecution en 8242 ms
+Dijkstra : 6456 nodes évalués en 18 ms avec un tas de 137 noeuds max
+A* : 723 nodes évalués en 2 ms avec un tas de 52 noeuds max
+=====================================================================
+Test 50: node d'origine 85387 -> node de destination 95838
+BellmanFord : éxecution en 10930 ms
+Dijkstra : 110192 nodes évalués en 444 ms avec un tas de 370 noeuds max
+A* : 72177 nodes évalués en 501 ms avec un tas de 588 noeuds max
