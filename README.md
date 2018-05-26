@@ -311,7 +311,7 @@ Cet `ArcInspector` supplémentaire nous a été très utile car grâce à lui no
 Nous avons notamment eu un problème en partant du nœud *35052* et en allant au nœud *16597* sur `toulouse.mapgr`, qui semble être un problème sur le fichier de la carte de Toulouse.
 
 En conclusion, nous avons eu une démarche de test visant à couvrir le plus de cas possibles de manière automatique et cela nous a permis de détecter très rapidement les régressions dans notre code. En effet il nous est arrivé de modifier le code de notre algorithme et avoir une suite de test toute prête nous a permis de vérifier que celui-ci marchait au moins aussi bien qu'avant.
-De plus les tests nous ont permis de vérifier l'implémentation de l'A* de manière automatique. Nous sommes donc très satisfaits d'avoir passé du temps à écrire ces tests car cela a été un vrai gain de temps et nous avons très vite rentabilisé le temps passé à écrire des tests.
+De plus les tests nous ont permis de vérifier l'implémentation de l'A\* de manière automatique. Nous sommes donc très satisfaits d'avoir passé du temps à écrire ces tests car cela a été un vrai gain de temps et nous avons très vite rentabilisé le temps passé à écrire des tests.
 
 # Tests de performance
 
@@ -325,7 +325,7 @@ Ceci nous a permi de générer toutes ces données de manière automatique, afin
 
 ### DataGenerator
 
-Cette classe est utilisée pour générer un fichier d'entrée pour une carte donnée `mapPath`, une taille donnée `size` et un arcInspector voulu. La méthode `createFile()` écrit dans un fichier de sortie `size` couples de points aléatoires pour lesquels il existe un chemin (vérifié en lançant un A* puisqu'on on a confirmé son fonctionnement, avec l'arcInspector correspondant).
+Cette classe est utilisée pour générer un fichier d'entrée pour une carte donnée `mapPath`, une taille donnée `size` et un arcInspector voulu. La méthode `createFile()` écrit dans un fichier de sortie `size` couples de points aléatoires pour lesquels il existe un chemin (vérifié en lançant un A\* puisqu'on on a confirmé son fonctionnement, avec l'arcInspector correspondant).
 
 ### DataReader
 
@@ -339,29 +339,50 @@ TODO IMAGES DES FICHIERS
 
 ## Exploitation des résultats 
 
-### Tests sur la carte de Toulouse
+### Tests sur la carte de Cote d'Ivoire
 
-TODO DATA
+Nous avons lancé 50 fois chaque algorithme sur la carte de Côte d'Ivoire et avons compilé les résultats dans les tableaux suivants :
 
-### Tests sur la carte de France
+#### Analyse du temps d'exécution
 
-TODO DATA
+L'algorithme de Bellman-Ford a donc effectivement une complexité bien pire que celle du Dijkstra. De plus l'ajout d'une heurisitique au Dijkstra rends cet algorithme encore plus performants. On peut cependant observer que la moyenne de l'A\* est deux fois plus grande que sa médiane et que son temps d'éxécution maximal est bien plus grand que celui du Dijkstra : on en déduis qu'il doit exister des cas où l'heuristique de l'A\* le trompe et le rends beaucoup moins optimal que Dijkstra.
 
-On constate qu'A* est beaucoup plus perfomant que Dijkstra en terme de temps d'éxécution et de noeuds parcouru même si la file d'attente a tendance à être plus grande. Ceci est cohérent puisqu'A* est une amélioration de Dijsktra utilisant une heuristique pour avoir un parcours plus "direct" là où Dijkstra parcourt les noeuds selon un rayon qui s'étend dans toutes les directions.
+![Analyse du temps d'exécution](rapport/analyze_perf_time.png "Temps2")
+\ 
 
-TODO IMAGES DU PARCOURS
+#### Analyse du nombre de noeuds évalués avant de trouver la solution
+
+Sur ce critère là, A\* est une amélioration incontestable de l'algorithme de Dijkstra puisque tous les critères de celui-ci sont meilleur : on évalue entre 230% et 300% de moins de noeuds avec l'A\* qu'avec le Dijkstra ! De plus les bornes de l'A\* sont inférieures à celle du Dijkstra.
+
+![Analyse du nombre de noeuds évalués avant de trouver la solution](rapport/analyze_perf_nodes.png "Nodes2")
+\ 
+
+#### Analyse de la taille maximale du tas
+
+Pour ce qui est de la taille du tas, l'A\* est beaucoup plus consommateur que le Dijkstra : il consomme en moyenne entre 115% et 125% de la mémoire qu'a utilisé le Dijkstra.
+Il peut arriver que l'A\* consomme moins de mémoire que le Dijkstra, on impute cela au fait que l'A\* trouve la solution beaucoup plus rapidement que le Dijkstra et a donc gardé une frontière très restreinte.
+
+![Analyse de la taille maximale du tas](rapport/analyze_perf_heap.png "Heap2")
+\ 
+
+#### Conclusion
+
+On constate qu'A\* est beaucoup plus perfomant que Dijkstra en terme de temps d'éxécution et de noeuds parcouru même si la file d'attente a tendance à être plus grande. Ceci est cohérent puisqu'A\* est une amélioration de Dijsktra utilisant une heuristique pour avoir un parcours plus "direct" là où Dijkstra parcourt les noeuds selon un rayon qui s'étend dans toutes les directions.
+Ainsi, il peut arriver que la forme de la frontière de l'A\* soit de nature à contenir plus de noeud (comme une étoile par exemple) que celle du Dijkstra qui sera toujours plus ou moins un cercle.
+
+Donc bien qu'offrant un gain de performance non négligeable par rapport au Dijkstra, l'A\* s'avère être plus gourmand en mémoire, un défaut qu'il faudra donc prendre en compte au moment de choisir un algorithme de plus court chemin en fonction des données du problème.
 
 # Problème ouvert : covoiturage
 
-Problème : on cherche à minimiser la distance parcourue en trajet pour deux covoitureurs qui partent de deux origines $$O_1$$ et $$O_2$$ différentes et ont une destination D commune. Le problème revient donc à chercher quel est le noeud R du graphe où les covoitureurs doivent se rejoindre de manière à ce que la distance $$O_1$$P + $$O_2$$P + RD soit minimale.
+Problème : on cherche à minimiser la distance parcourue en trajet pour deux covoitureurs qui partent de deux origines $O_1$ et $O_2$ différentes et ont une destination D commune. Le problème revient donc à chercher quel est le noeud R du graphe où les covoitureurs doivent se rejoindre de manière à ce que la distance $O_1$P + $O_2$P + RD soit minimale.
 
 TODO IMAGE ?
 
-On sait que : $$0_1$$R + $$0_2$$R + RD <= $$O_1$$D + $$O_2$$D ce qui donne une borne maximale pour la longueur recherchée et permet de limiter une zone dans laquelle rechercher R (à savoir que R sera situé dans le triangle formé par $$O_1$$, $$O_2$$ et D.
+On sait que : $0_1$R + $0_2$R + RD <= $O_1$D + $O_2$D ce qui donne une borne maximale pour la longueur recherchée et permet de limiter une zone dans laquelle rechercher R (à savoir que R sera situé dans le triangle formé par $O_1$, $O_2$ et D.
 
-Algorithme général : On lance deux algorithme A* ayant pour origine les points O1 et O2 et s'orientant vers un point les rapprochant à la fois de D et de l'autre O. On pondère de manière à ce que l'algorithme priorise le rapporchement vers l'autre covoitureur quand il est proche. 
+Algorithme général : On lance deux algorithme A\* ayant pour origine les points O1 et O2 et s'orientant vers un point les rapprochant à la fois de D et de l'autre O. On pondère de manière à ce que l'algorithme priorise le rapporchement vers l'autre covoitureur quand il est proche. 
 
-Cas particuliers : Si D est situé sur le chemin le plus court entre $$O_1$$ et $$O_2$$ (caractérisé par la condition $$O_1O_2 = O_1D+O_2D$$ alors chaque covoitureur doit se rendre directement à la destination D car dans ce cas le point R et D sont le même.
+Cas particuliers : Si D est situé sur le chemin le plus court entre $O_1$ et $O_2$ (caractérisé par la condition $O_1O_2 = O_1D+O_2D$ alors chaque covoitureur doit se rendre directement à la destination D car dans ce cas le point R et D sont le même.
 
 # Conclusion
 
