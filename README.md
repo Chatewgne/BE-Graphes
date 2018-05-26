@@ -28,12 +28,15 @@ Pour terminer ce bureau d'étude nous sommes confrontés à un problème de grap
 
 # Documents de conception
 
-Afin de nous familiariser avec la librairie Java qui nous est fournie, nous avons réalisé un graphe UML des différentes classes à utiliser.
+Afin de nous familiariser avec la librairie Java qui nous est fournie, nous avons réalisé un graphe UML des différentes classes à utiliser.  
+&nbsp;
+
+
 
 ![UML Des différentes classes permettant de manipuler le graphe représentant la carte](UML.png "Graphe")
 \ 
 
-
+\newpage 
 # Classes développées
 
 ## Labels
@@ -210,11 +213,12 @@ for(int i = 0, j = result.size() - 1; i < j; i++) {
 }
 
 Path sol_path = Path.createShortestPathFromNodes(graph, result);
-solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path, nodeEvaluated, maxHeapSize);
+solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path, 								nodeEvaluated, maxHeapSize);
 return solution;
 }
 catch (Exception e) {
-    return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null, nodeEvaluated, maxHeapSize);
+    return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null, 
+					nodeEvaluated, maxHeapSize);
 }
 ```
 
