@@ -19,7 +19,8 @@ date : 20 Mai 2018
 
 # Introduction 
 
-L'objectif de ce bureau d'étude est de nous faire découvrir les méthodes modernes de programmation utilisées en entreprise au travers de l'implémentation de deux algorithmes de recherche de chemin. Nous commençons par construire les structures de données nécessaires à leur implémentation (file de priorité, classes objets) pour ensuite implémenter un algorithme de Dijkstra et un algorithme d'A*. Enfin nous écrivons des tests unitaires pour vérifier le fonctionnement de nos solutions et des tests de perfomance permettant de comparer les différents algorithmes étudiés.
+L'objectif de ce bureau d'étude est de nous faire découvrir les méthodes modernes de programmation utilisées en entreprise au travers de l'implémentation de deux algorithmes de recherche de chemin. 
+Nous commençons par construire les structures de données nécessaires à leur implémentation (file de priorité, classes objets) pour ensuite implémenter un algorithme de Dijkstra et un algorithme d'A\*. Enfin nous écrivons des tests unitaires pour vérifier le fonctionnement de nos solutions et des tests de perfomance permettant de comparer les différents algorithmes étudiés.
 
 Pour terminer ce bureau d'étude nous sommes confrontés à un problème de graphes pour lequel nous devons proposer un traitement algorithmique cohérent.
 
@@ -29,11 +30,15 @@ Pour terminer ce bureau d'étude nous sommes confrontés à un problème de grap
 
 Afin de nous familiariser avec la librairie Java qui nous est fournie, nous avons réalisé un graphe UML des différentes classes à utiliser.
 
+![UML Des différentes classes permettant de manipuler le graphe représentant la carte](UML.png "Graphe")
+\ 
+
+
 # Classes développées
 
 ## Labels
 
-L'utilisation des algorithmes de Dijskstra et A* nécessite la création de classes `Label` afin d'attribuer des propriétés aux nœuds qui sont mises à jour au cours du parcours du graphe.
+L'utilisation des algorithmes de Dijskstra et A\* nécessite la création de classes `Label` afin d'attribuer des propriétés aux nœuds qui sont mises à jour au cours du parcours du graphe.
 
 ### DijkstraLabel
 
@@ -95,26 +100,26 @@ On commence par initialiser quelques variables utiles, notamment on initialise l
 
 ```java
 ShortestPathData data = getInputData();
-// Le résultat de l'algorithme
 ShortestPathSolution solution = null;
+// Retrieve the graph.
 Graph graph = data.getGraph();
 final int nbNodes = graph.size();
 boolean done = false ;
-// Le tableau de label indexé par l'ID des nodes
-ArrayList<Label> labels = new ArrayList<>(nbNodes);
-for (int i = 0; i < nbNodes; i++) {
-    labels.add(null);
-}
+// Initialize array of distances.
+Map<Node, Label> labels = new HashMap<>(nbNodes);
 ```
 
 Ensuite on crée le `Label` de l'origine et la file de priorité et on ajoute ledit `Label` à la file.
 
 ```java
 Label labi = new Label(data.getOrigin(), null, false, 0.0);
-labels.set(data.getOrigin().getId(), labi);
-
+labels.put(data.getOrigin(),labi);
+// Le tas
 BinaryHeap<Label> tas= new BinaryHeap<>();
-tas.insert(labels.get(data.getOrigin().getId()));
+tas.insert(labels.get(data.getOrigin()));
+// Ces deux variables permettent de renvoyer des statistiques en sortie de l'algorithme.
+int nodeEvaluated = 0;
+int maxHeapSize = 0;
 ```
 
 On peut maintenant exécuter l'algorithme : on boucle sur `!done` et on sort de la boucle quand la file de priorité est vide.
@@ -147,90 +152,75 @@ On parcourt les voisins `y` du nœud associé au `Label` et on alloue les `Label
     {
         Arc arc = it.next();
         Node y = arc.getDestination();
-        Label label_y = labels.get(y.getId());
-        // Allocation du label
-        if (label_y == null) {
-            labels.set(y.getId(), new Label(null, null, false, Double.POSITIVE_INFINITY));
-            label_y = labels.get(y.getId());
+        Label label_y;
+
+        if (labels.containsKey(y)) {
+            label_y = labels.get(y);
+        }
+        else {
+            label_y = new Label(null, null, false, Double.POSITIVE_INFINITY);
+            labels.put(y,label_y);
         }
 ```
 
 Ensuite, si le nœud n'est pas marqué et que l'on peut y aller on le met à jour.
 
 ```java
-
-        if (!(label_y.marked) && !y.equals(x) && data.isAllowed(arc))
-        {
-            double AncienCout = labels.get(y.getId()).cost;
-            double NewCout = labels.get(arc.getOrigin().getId()).cost + data.getCost(arc);
-            notifyNodeReached(y);
-            if (NewCout < AncienCout)
-            {
-                labels.get(y.getId()).me = y ;
-                labels.get(y.getId()).cost = NewCout;
-                labels.get(y.getId()).parent = x.me;
-                try {
-                    tas.remove(labels.get(y.getId()));
+            if (!(label_y.marked) && !y.equals(x.me) && data.isAllowed(arc))
+                {
+                    double AncienCout = labels.get(y).cost;
+                    double NewCout = labels.get(arc.getOrigin()).cost + data.getCost(arc);
+                    notifyNodeReached(y);
+                    if (NewCout < AncienCout)
+                    {
+                        Label y_lab = labels.get(y);
+                        y_lab.me = y ;
+                        y_lab.cost = NewCout;
+                        y_lab.parent = x.me;
+                        if (AncienCout != Double.POSITIVE_INFINITY) {
+                            try {
+                                tas.remove(labels.get(y));
+                            } catch (ElementNotFoundException ignored) {}
+                        }
+                        tas.insert(labels.get(y));
+                    }
                 }
-                catch (ElementNotFoundException ignored){}
-
-                tas.insert(labels.get(y.getId()));
             }
-        }
-    }
-```
-
-Ensuite on vérifie qu'il existe un `Label` non marqué sinon on arrête l'algorithme.
-
-```java
-    if (!done) {
-        done = true;
-        for (Label lab : labels) {
-            if (lab == null || !lab.marked) {
-                done = false;
-                break;
-            }
-        }
-    }
-}
 ```
 
 Lorsque la boucle sur `!done` est terminée on essaie de reconstruire le chemin de la solution.
 
 ```java
-try {
+ArrayList<Node> result = new ArrayList<Node>();
+/* Création du chemin */
+Node current = data.getDestination();
+boolean done_rebuilding = false;
+while (! done_rebuilding) {
+    result.add(current);
+    current = labels.get(current).parent;
 
-    ArrayList<Node> result = new ArrayList<Node>();
-
-    /* Création du chemin */
-    Node current = data.getDestination();
-    boolean done_rebuilding = false;
-    while (! done_rebuilding) {
+    if (current.equals(data.getOrigin())) {
+        done_rebuilding = true;
         result.add(current);
-        current = labels.get(current.getId()).parent;
-
-        if (current.equals(data.getOrigin())) {
-            done_rebuilding = true;
-            result.add(current);
-        }
     }
-    /* Inversion du chemin */
-    for(int i = 0, j = result.size() - 1; i < j; i++) {
-        result.add(i, result.remove(j));
-    }
+}
+/* Inversion du chemin */
+for(int i = 0, j = result.size() - 1; i < j; i++) {
+    result.add(i, result.remove(j));
+}
 
-    Path sol_path = Path.createShortestPathFromNodes(graph, result);
-    solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path);
-    return solution;
+Path sol_path = Path.createShortestPathFromNodes(graph, result);
+solution = new ShortestPathSolution(data, AbstractSolution.Status.FEASIBLE, sol_path, nodeEvaluated, maxHeapSize);
+return solution;
 }
 catch (Exception e) {
-    return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null);
+    return new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE, null, nodeEvaluated, maxHeapSize);
 }
 ```
 
 ## A*
 
-L'implémentation de l'A* est la même que celle du Dijkstra sauf que l'on utilise des `AstarLabel` au lieu des `Label` normaux. Lors de l'allocation d'un `AstarLabel` le coût heuristique est donnée par la distance à vol d'oiseau entre le nœud associé à ce label et le but de l'algorithme.
+L'implémentation de l'A\* est la même que celle du Dijkstra sauf que l'on utilise des `AstarLabel` au lieu des `Label` normaux. Lors de l'allocation d'un `AstarLabel` le coût heuristique est donnée par la distance à vol d'oiseau entre le nœud associé à ce label et le but de l'algorithme.
 \pagebreak
 
 # Tests unitaires
@@ -239,7 +229,7 @@ Pour les tests nous avons décidé d'essayer d'être le plus exhaustif possible 
 
 Nous avons tout d'abord effectué un test "manuel", c'est à dire que sur un graphe simple nous avons calculé à la main le résultat du Dijkstra pour tous les nœuds de départs et d'arrivées et nous avons vérifié (de manière automatique) que nos algorithmes trouvent les mêmes résultats. 
 
-Dans le cas de la carte de Toulouse, nous vérifions que le Dijkstra et l'A* trouvent bien des solutions de la même longueur (ou de la même durée si on fait une recherche en temps) que le Bellman-Ford qui est utilisé comme oracle.
+Dans le cas de la carte de Toulouse, nous vérifions que le Dijkstra et l'A\* trouvent bien des solutions de la même longueur (ou de la même durée si on fait une recherche en temps) que le Bellman-Ford qui est utilisé comme oracle.
 
 Pour cela nous avons commencé par écrire une routine de test :
 
@@ -375,7 +365,7 @@ Le corps principal de cette classe génère des fichiers d'entrée de différent
 
 ### Tests sur la carte de Cote d'Ivoire
 
-Nous avons lancé 50 fois chaque algorithme sur la carte de Côte d'Ivoire et avons compilé les résultats dans les tableaux suivants :
+Nous avons lancé 100 fois chaque algorithme sur la carte de Côte d'Ivoire et avons compilé les résultats dans les tableaux suivants :
 
 #### Analyse du temps d'exécution
 
