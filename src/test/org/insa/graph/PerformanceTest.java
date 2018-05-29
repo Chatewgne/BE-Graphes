@@ -82,11 +82,11 @@ public class PerformanceTest {
     public static void main(String args[]) throws IOException{
 
         String mapName = "ivory-coast";
-        int nbTest = 55;
+        int nbTest = 51;
         String outJeuTest = "bench/" + mapName + "-" + nbTest + ".txt";
         String outTest = "bench/" + mapName + "-" + nbTest + "-results";
-        generateInputFile("/maps/" + mapName + ".mapgr", nbTest, outJeuTest, 0);
-        runTestOnFile(outJeuTest,0,outTest);
+        generateInputFile("/maps/" + mapName + ".mapgr", nbTest, outJeuTest, 2);
+        runTestOnFile(outJeuTest,2,outTest);
     }
 
 }
