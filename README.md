@@ -369,7 +369,7 @@ Le corps principal de cette classe génère des fichiers d'entrée de différent
 
 ### Tests sur la carte de Cote d'Ivoire
 
-Nous avons lancé 100 fois chaque algorithme sur la carte de Côte d'Ivoire et avons compilé les résultats dans les tableaux suivants :
+Nous avons lancé 50 fois chaque algorithme en temps et 50 fois en distance sur la carte de Côte d'Ivoire puis nous avons compilé les résultats dans les tableaux suivants :
 
 #### Analyse du temps d'exécution
 
